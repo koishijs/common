@@ -1,9 +1,10 @@
-import { Meta, GroupMemberInfo, UserData, GroupContext, UserField, CommandConfig } from 'koishi-core'
+import { Meta, GroupMemberInfo, UserData, Context, UserField, CommandConfig } from 'koishi-core'
 import { getDateNumber, simplify } from 'koishi-utils'
 
 export interface Rank {
   names: string[]
   options?: any
+  groupOnly?: boolean
   title?: (meta: Meta, options: any) => string
   value: (user: UserData, meta: Meta, options: any) => number
   fields: UserField[]
@@ -21,6 +22,7 @@ export function registerRank (name: string, rank: Rank) {
 registerRank('talkativeness', {
   names: ['发言', '聊天'],
   options: { offset: 1 },
+  groupOnly: true,
   title (meta, options) {
     const key = getDateNumber() - options.offset
     const date = new Date(key * 86400000).toLocaleDateString()
@@ -34,20 +36,22 @@ registerRank('talkativeness', {
   format: value => value + ' 条',
 })
 
-export default function apply (ctx: GroupContext, options: CommandConfig) {
+export default function apply (ctx: Context, options: CommandConfig) {
   const rankCommand = ctx.command('rank <type>', '显示排行', options)
     .option('-g, --global', '使用全服数据', { authority: 2 })
     .option('--start <index>', '起始排名，默认为 1', { default: 1 })
     .option('--end <index>', '终止排名，默认为 10', { default: 10 })
     .action(async ({ meta, options }, type) => {
       let data: { name: string, user: UserData }[]
-
-      if (meta.messageType === 'private' && !options.global) return meta.$send('私聊只能获取全服排行。')
-
       const rank = rankMap[type]
       if (!rank) return meta.$send('无法找到对应的排行。')
-      const { names: [name] } = rank
 
+      if (meta.messageType === 'private' && !options.global) {
+        if (rank.groupOnly) return meta.$send('此排行只针对群。')
+        return meta.$send('私聊只能获取全服排行。')
+      }
+
+      const { names: [name] } = rank
       Object.assign(options, rank.options)
 
       if (options.global) {
