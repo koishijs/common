@@ -5,7 +5,9 @@ import help from './help'
 import rank from './rank'
 
 export * from './admin'
-export { admin }
+export * from './rank'
+
+export { admin, echo, help, rank }
 
 export function apply (ctx: Context) {
   ctx

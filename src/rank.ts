@@ -1,7 +1,7 @@
 import { Meta, GroupMemberInfo, UserData, GroupContext, UserField, CommandConfig } from 'koishi-core'
 import { getDateNumber, simplify } from 'koishi-utils'
 
-interface Rank {
+export interface Rank {
   names: string[]
   options?: any
   title?: (meta: Meta, options: any) => string

@@ -1,7 +1,7 @@
 import { Context, User, userFlags, UserFlag, Meta, UserField, getTargetId, CommandConfig } from 'koishi-core'
 import { camelCase, snakeCase, isInteger } from 'koishi-utils'
 
-type ActionCallback<K extends UserField = UserField> = (this: Context, meta: Meta, user: User<K>, ...args: string[]) => Promise<void>
+type ActionCallback <K extends UserField = UserField> = (this: Context, meta: Meta, user: User<K>, ...args: string[]) => Promise<void>
 
 export interface AdminAction {
   callback: ActionCallback
