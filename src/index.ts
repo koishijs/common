@@ -3,11 +3,12 @@ import admin from './admin'
 import echo from './echo'
 import help from './help'
 import rank from './rank'
+import repeater from './repeater'
 
 export * from './admin'
 export * from './rank'
 
-export { admin, echo, help, rank }
+export { admin, echo, help, rank, repeater }
 
 export function apply (ctx: Context) {
   ctx
@@ -15,4 +16,5 @@ export function apply (ctx: Context) {
     .plugin(echo)
     .plugin(help)
     .plugin(rank)
+    .plugin(repeater)
 }
