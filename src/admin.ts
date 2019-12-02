@@ -1,5 +1,5 @@
 import { Context, User, userFlags, UserFlag, Meta, UserField, getTargetId, CommandConfig, GroupField, UserData, GroupData } from 'koishi-core'
-import { camelCase, snakeCase, isInteger, complement, Observed } from 'koishi-utils'
+import { isInteger, complement, Observed, paramCase } from 'koishi-utils'
 
 type ActionCallback <T extends {}, K extends keyof T> =
   (this: Context, meta: Meta, target: Observed<Pick<T, K>>, ...args: string[]) => Promise<void>
@@ -18,11 +18,11 @@ const userActionMap: Record<string, UserAction> = {}
 const groupActionMap: Record<string, GroupAction> = {}
 
 export function registerUserAction <K extends UserField> (name: string, callback: ActionCallback<UserData, K>, fields: K[] = []) {
-  userActionMap[name] = { callback, fields }
+  userActionMap[paramCase(name)] = { callback, fields }
 }
 
 export function registerGroupAction <K extends GroupField> (name: string, callback: ActionCallback<GroupData, K>, fields: K[] = []) {
-  groupActionMap[name] = { callback, fields }
+  groupActionMap[paramCase(name)] = { callback, fields }
 }
 
 registerUserAction('setAuth', async (meta, user, value) => {
@@ -83,29 +83,52 @@ registerUserAction('showUsage', async (meta, user, ...commands) => {
 })
 
 export default function apply (ctx: Context, options: CommandConfig) {
-  const availableCommands = Object.keys(userActionMap).map(snakeCase).join(', ')
+  const userActions = Object.keys(userActionMap).map(paramCase).join(', ')
+  const groupActions = Object.keys(groupActionMap).map(paramCase).join(', ')
 
   ctx.command('advanced')
     .subcommand('admin <action> [...args]', '管理用户', { authority: 4, ...options })
-    .option('-u, --user <user>', '指定目标用户')
+    .option('-u, --user [user]', '指定目标用户')
+    .option('-g, --group [group]', '指定目标群')
+    .option('-G, --this-group', '指定目标群为本群')
     .action(async ({ meta, options }, name: string, ...args: string[]) => {
-      if (!name) return meta.$send(`当前的可用指令有：${availableCommands}。`)
-      const action = userActionMap[camelCase(name)]
-      if (!action) return meta.$send(`指令未找到。当前的可用指令有：${availableCommands}。`)
-      const fields = action.fields.slice()
-      if (!fields.includes('authority')) fields.push('authority')
-
-      let user: User
-      if (options.user) {
-        const qq = getTargetId(options.user)
-        if (!qq) return meta.$send('未指定目标。')
-        user = await ctx.database.observeUser(qq, 0, fields)
-        if (!user) return meta.$send('未找到用户。')
-        if (qq !== meta.$user.id && meta.$user.authority <= user.authority) return meta.$send('权限不足。')
-      } else {
-        user = await ctx.database.observeUser(meta.$user, 0, fields)
+      const isGroup = 'g' in options || 'G' in options
+      if ('user' in options && isGroup) {
+        return meta.$send('不能同时目标为指定用户和群。')
       }
+      const actionList = isGroup ? groupActions : userActions
+      const actionMap = isGroup ? groupActionMap : userActionMap
+      if (!name) {
+        return meta.$send(`当前的可用指令有：${actionList}。`)
+      }
+      const action = actionMap[paramCase(name)]
+      if (!action) return meta.$send(`指令未找到。当前的可用指令有：${actionList}。`)
 
-      return action.callback.call(ctx, meta, user, ...args)
+      if (isGroup) {
+        let group: Observed<GroupData>
+        if (options.thisGroup) {
+          // @ts-ignore FIXME:
+          group = await ctx.database.observeGroup(meta.$group)
+        } else if (typeof options.group === 'number') {
+          // @ts-ignore FIXME:
+          group = await ctx.database.observeGroup(options.group)
+        }
+        if (!group) return meta.$send('未找到指定的群。')
+        return action.callback.call(ctx, meta, group, ...args)
+      } else {
+        const fields = action.fields.slice() as UserField[]
+        if (!fields.includes('authority')) fields.push('authority')
+        let user: User
+        if (options.user) {
+          const qq = getTargetId(options.user)
+          if (!qq) return meta.$send('未指定目标。')
+          user = await ctx.database.observeUser(qq, 0, fields)
+          if (!user) return meta.$send('未找到用户。')
+          if (qq !== meta.$user.id && meta.$user.authority <= user.authority) return meta.$send('权限不足。')
+        } else {
+          user = await ctx.database.observeUser(meta.$user, 0, fields)
+        }
+        return action.callback.call(ctx, meta, user, ...args)
+      }
     })
 }
