@@ -1,8 +1,7 @@
 import { MessageType, Context, CommandConfig } from 'koishi-core'
 
 export default function (ctx: Context, options: CommandConfig) {
-  ctx.command('advanced')
-    .subcommand('echo <message>', '向多个上下文发送广播', { authority: 2, ...options })
+  ctx.command('echo <message>', '向多个上下文发送广播', { authority: 2, ...options })
     .option('-u, --user <id>', '指定信息发送的目标 QQ 号', { isString: true, authority: 4 })
     .option('-g, --group <id>', '指定信息发送的目标群号', { isString: true, authority: 4 })
     .option('-d, --discuss <id>', '指定信息发送的目标讨论组号', { isString: true, authority: 4 })

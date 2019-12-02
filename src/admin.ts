@@ -86,8 +86,7 @@ export default function apply (ctx: Context, options: CommandConfig) {
   const userActions = Object.keys(userActionMap).map(paramCase).join(', ')
   const groupActions = Object.keys(groupActionMap).map(paramCase).join(', ')
 
-  ctx.command('advanced')
-    .subcommand('admin <action> [...args]', '管理用户', { authority: 4, ...options })
+  ctx.command('admin <action> [...args]', '管理用户', { authority: 4, ...options })
     .option('-u, --user [user]', '指定目标用户')
     .option('-g, --group [group]', '指定目标群')
     .option('-G, --this-group', '指定目标群为本群')
@@ -107,10 +106,8 @@ export default function apply (ctx: Context, options: CommandConfig) {
       if (isGroup) {
         let group: Observed<GroupData>
         if (options.thisGroup) {
-          // @ts-ignore FIXME:
           group = await ctx.database.observeGroup(meta.$group)
         } else if (typeof options.group === 'number') {
-          // @ts-ignore FIXME:
           group = await ctx.database.observeGroup(options.group)
         }
         if (!group) return meta.$send('未找到指定的群。')

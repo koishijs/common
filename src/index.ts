@@ -1,5 +1,7 @@
 import { Context, CommandConfig } from 'koishi-core'
 import admin from './admin'
+import broadcast, { BroadcastOptions } from './broadcast'
+import callme, { CallmeOptions } from './callme'
 import echo from './echo'
 import help from './help'
 import rank from './rank'
@@ -11,12 +13,14 @@ import welcome, { WelcomeMessage } from './welcome'
 export * from './admin'
 export * from './rank'
 
-export { admin, echo, help, rank, repeater, requestHandler, respondent, welcome }
+export { admin, broadcast, callme, echo, help, rank, repeater, requestHandler, respondent, welcome }
 
 declare module 'koishi-core/dist/app' {
   interface AppOptions {
     pluginConfig?: {
       admin?: false | CommandConfig
+      broadcast?: false | BroadcastOptions
+      callme?: false | CallmeOptions
       echo?: false | CommandConfig
       help?: false | CommandConfig
       rank?: false | CommandConfig
