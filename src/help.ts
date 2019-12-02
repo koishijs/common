@@ -22,7 +22,7 @@ export default function apply (ctx: Context, options: CommandConfig) {
 function getShortcuts (command: Command, user: UserData) {
   return Object.keys(command._shortcuts).filter((key) => {
     const shortcut = command._shortcuts[key]
-    return !shortcut.hidden && !shortcut.prefix && (!shortcut.authority || shortcut.authority <= user.authority)
+    return !shortcut.hidden && !shortcut.prefix && (!shortcut.authority || !user || shortcut.authority <= user.authority)
   })
 }
 
@@ -31,7 +31,7 @@ function getCommands (context: Context, meta: Meta, parent?: Command) {
     ? parent.children
     : context.app._commands.filter(cmd => isAncestor(cmd.context.path, meta.$path))
   return commands
-    .filter(cmd => cmd.config.authority <= meta.$user.authority)
+    .filter(cmd => !meta.$user || cmd.config.authority <= meta.$user.authority)
     .sort((a, b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0)
 }
 
@@ -74,7 +74,9 @@ function showGlobalHelp (context: Context, meta: Meta, options: any) {
 
 async function showCommandHelp (command: Command, meta: Meta, options: any) {
   const output = [command.rawName, command.config.description]
-  meta.$user = await command.context.database.observeUser(meta.userId)
+  if (command.context.database) {
+    meta.$user = await command.context.database.observeUser(meta.userId)
+  }
 
   if (command._aliases.length) {
     output.push(`中文别名：${Array.from(command._aliases).join('，')}。`)
@@ -84,22 +86,24 @@ async function showCommandHelp (command: Command, meta: Meta, options: any) {
     output.push(`相关全局指令：${shortcuts.join('，')}。`)
   }
 
-  const { authority, maxUsageText, authorityHint } = command.config
-  const usage = command.updateUsage(meta.$user)
   const maxUsage = command.getConfig('maxUsage', meta)
   const minInterval = command.getConfig('minInterval', meta)
-  if (maxUsage !== Infinity) {
-    output.push(`已调用次数：${Math.min(usage.count, maxUsage)}/${maxUsageText || maxUsage}。`)
-  }
-  if (minInterval > 0) {
-    const nextUsage = usage.last ? (Math.max(0, minInterval + usage.last - Date.now()) / 1000).toFixed() : 0
-    output.push(`距离下次调用还需：${nextUsage}/${minInterval / 1000} 秒。`)
-  }
-
-  if (authorityHint) {
-    output.push(authorityHint)
-  } else if (authority > 1) {
-    output.push(`最低权限：${authority} 级。`)
+  if (meta.$user) {
+    const { authority, maxUsageText, authorityHint } = command.config
+    const usage = command.updateUsage(meta.$user)
+    if (maxUsage !== Infinity) {
+      output.push(`已调用次数：${Math.min(usage.count, maxUsage)}/${maxUsageText || maxUsage}。`)
+    }
+    if (minInterval > 0) {
+      const nextUsage = usage.last ? (Math.max(0, minInterval + usage.last - Date.now()) / 1000).toFixed() : 0
+      output.push(`距离下次调用还需：${nextUsage}/${minInterval / 1000} 秒。`)
+    }
+  
+    if (authorityHint) {
+      output.push(authorityHint)
+    } else if (authority > 1) {
+      output.push(`最低权限：${authority} 级。`)
+    }
   }
 
   if (command._usage) {
