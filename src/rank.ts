@@ -37,7 +37,7 @@ registerRank('talkativeness', {
 })
 
 export default function apply (ctx: Context, options: CommandConfig) {
-  const rankCommand = ctx.command('rank <type>', '显示排行', options)
+  ctx.command('rank <type>', '显示排行', options)
     .option('-g, --global', '使用全服数据', { authority: 2 })
     .option('--start <index>', '起始排名，默认为 1', { default: 1 })
     .option('--end <index>', '终止排名，默认为 10', { default: 10 })
@@ -108,7 +108,7 @@ export default function apply (ctx: Context, options: CommandConfig) {
     for (const type in rankMap) {
       const { names = [] } = rankMap[type]
       if (names.includes(message)) {
-        return rankCommand.run({ name: 'rank', args: [type], meta, options: { global, start: 1, end: 10 }, next })
+        return ctx.runCommand('rank', meta, [type], { global, start: 1, end: 10 })
       }
     }
     return next()

@@ -1,20 +1,31 @@
-import { Context, User, userFlags, UserFlag, Meta, UserField, getTargetId, CommandConfig } from 'koishi-core'
-import { camelCase, snakeCase, isInteger } from 'koishi-utils'
+import { Context, User, userFlags, UserFlag, Meta, UserField, getTargetId, CommandConfig, GroupField, UserData, GroupData } from 'koishi-core'
+import { camelCase, snakeCase, isInteger, complement, Observed } from 'koishi-utils'
 
-type ActionCallback <K extends UserField = UserField> = (this: Context, meta: Meta, user: User<K>, ...args: string[]) => Promise<void>
+type ActionCallback <T extends {}, K extends keyof T> =
+  (this: Context, meta: Meta, target: Observed<Pick<T, K>>, ...args: string[]) => Promise<void>
 
-export interface AdminAction {
-  callback: ActionCallback
+export interface UserAction {
+  callback: ActionCallback<UserData, UserField>
   fields: UserField[]
 }
 
-const actionMap: Record<string, AdminAction> = {}
-
-export function registerAdminAction <K extends UserField> (name: string, callback: ActionCallback<K>, fields: K[] = []) {
-  actionMap[name] = { callback, fields }
+export interface GroupAction {
+  callback: ActionCallback<GroupData, GroupField>
+  fields: GroupField[]
 }
 
-registerAdminAction('setAuth', async (meta, user, value) => {
+const userActionMap: Record<string, UserAction> = {}
+const groupActionMap: Record<string, GroupAction> = {}
+
+export function registerUserAction <K extends UserField> (name: string, callback: ActionCallback<UserData, K>, fields: K[] = []) {
+  userActionMap[name] = { callback, fields }
+}
+
+export function registerGroupAction <K extends GroupField> (name: string, callback: ActionCallback<GroupData, K>, fields: K[] = []) {
+  groupActionMap[name] = { callback, fields }
+}
+
+registerUserAction('setAuth', async (meta, user, value) => {
   const authority = Number(value)
   if (!isInteger(authority) || authority < 0) return meta.$send('参数错误。')
   if (authority >= meta.$user.authority) return meta.$send('权限不足。')
@@ -27,9 +38,9 @@ registerAdminAction('setAuth', async (meta, user, value) => {
   }
 })
 
-registerAdminAction('setFlag', async (meta, user, ...flags) => {
+registerUserAction('setFlag', async (meta, user, ...flags) => {
   if (!flags.length) return meta.$send(`可用的标记有 ${userFlags.join(', ')}。`)
-  const notFound = flags.filter(n => !userFlags.includes(n))
+  const notFound = complement(flags, userFlags)
   if (notFound.length) return meta.$send(`未找到标记 ${notFound.join(', ')}。`)
   for (const name of flags) {
     user.flag |= UserFlag[name]
@@ -38,9 +49,9 @@ registerAdminAction('setFlag', async (meta, user, ...flags) => {
   return meta.$send('用户信息已修改。')
 })
 
-registerAdminAction('unsetFlag', async (meta, user, ...flags) => {
+registerUserAction('unsetFlag', async (meta, user, ...flags) => {
   if (!flags.length) return meta.$send(`可用的 flag 有：${userFlags.join(', ')}。`)
-  const notFound = flags.filter(n => !userFlags.includes(n))
+  const notFound = complement(flags, userFlags)
   if (notFound.length) return meta.$send(`未找到标记 ${notFound.join(', ')}。`)
   for (const name of flags) {
     user.flag &= ~UserFlag[name]
@@ -49,7 +60,7 @@ registerAdminAction('unsetFlag', async (meta, user, ...flags) => {
   return meta.$send('用户信息已修改。')
 })
 
-registerAdminAction('clearUsage', async (meta, user, ...commands) => {
+registerUserAction('clearUsage', async (meta, user, ...commands) => {
   if (commands.length) {
     for (const command of commands) {
       delete user.usage[command]
@@ -61,7 +72,7 @@ registerAdminAction('clearUsage', async (meta, user, ...commands) => {
   return meta.$send('用户信息已修改。')
 })
 
-registerAdminAction('showUsage', async (meta, user, ...commands) => {
+registerUserAction('showUsage', async (meta, user, ...commands) => {
   const { usage } = user
   if (!commands.length) commands = Object.keys(usage)
   if (!commands.length) return meta.$send('用户今日没有调用过指令。')
@@ -72,14 +83,14 @@ registerAdminAction('showUsage', async (meta, user, ...commands) => {
 })
 
 export default function apply (ctx: Context, options: CommandConfig) {
-  const availableCommands = Object.keys(actionMap).map(snakeCase).join(', ')
+  const availableCommands = Object.keys(userActionMap).map(snakeCase).join(', ')
 
   ctx.command('advanced')
     .subcommand('admin <action> [...args]', '管理用户', { authority: 4, ...options })
     .option('-u, --user <user>', '指定目标用户')
-    .action(async ({ meta, options }, name: string, args: any[]) => {
+    .action(async ({ meta, options }, name: string, ...args: string[]) => {
       if (!name) return meta.$send(`当前的可用指令有：${availableCommands}。`)
-      const action = actionMap[camelCase(name)]
+      const action = userActionMap[camelCase(name)]
       if (!action) return meta.$send(`指令未找到。当前的可用指令有：${availableCommands}。`)
       const fields = action.fields.slice()
       if (!fields.includes('authority')) fields.push('authority')

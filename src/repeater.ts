@@ -25,7 +25,7 @@ function getState (groupId: number) {
 type SessionSwitch = boolean | ((repeated: boolean, times: number) => boolean)
 type SessionText = string | ((userId: number, message: string) => string)
 
-interface RepeaterOptions {
+export interface RepeaterOptions {
   repeat: SessionSwitch
   interrupt: SessionSwitch
   repeatCheck: SessionSwitch
@@ -42,7 +42,7 @@ const defaultOptions: RepeaterOptions = {
   repeatCheck: (repeated, times) => randomFraction(times, times - 1),
   repeatCheckText: (userId) => `[CQ:at,qq=${userId}] 在？为什么重复复读？`,
   interruptCheck: (repeated, times) => repeated && randomFraction(times, times - 3),
-  interruptCheckText: (userId) => `[CQ:at,qq=${userId}] 在？为什么打断复读？`
+  interruptCheckText: (userId) => `[CQ:at,qq=${userId}] 在？为什么打断复读？`,
 }
 
 function getSwitch (sessionSwitch: SessionSwitch, repeated: boolean, times: number) {
