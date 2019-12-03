@@ -17,39 +17,33 @@ export * from './rank'
 
 export { admin, broadcast, callme, echo, exit, help, rank, repeater, requestHandler, respondent, welcome }
 
-declare module 'koishi-core/dist/app' {
-  interface AppOptions {
-    pluginConfig?: {
-      admin?: false | CommandConfig
-      broadcast?: false | BroadcastOptions
-      callme?: false | CallmeOptions
-      echo?: false | CommandConfig
-      exit?: false | CommandConfig
-      help?: false | CommandConfig
-      rank?: false | CommandConfig
-      repeater?: false | RepeaterOptions
-      requestHandler?: false | HandlerOptions
-      respondent?: false | Respondent[]
-      welcome?: false | WelcomeMessage
-    }
-  }
+interface CommonPluginOptions {
+  admin?: false | CommandConfig
+  broadcast?: false | BroadcastOptions
+  callme?: false | CallmeOptions
+  echo?: false | CommandConfig
+  exit?: false | CommandConfig
+  help?: false | CommandConfig
+  rank?: false | CommandConfig
+  repeater?: false | RepeaterOptions
+  requestHandler?: false | HandlerOptions
+  respondent?: false | Respondent[]
+  welcome?: false | WelcomeMessage
 }
 
 export const name = 'common'
 
-export function apply (ctx: Context) {
-  const { pluginConfig = {} } = ctx.app.options
-
+export function apply (ctx: Context, options: CommonPluginOptions) {
   ctx
-    .plugin(admin, pluginConfig.admin)
-    .plugin(broadcast, pluginConfig.broadcast)
-    .plugin(callme, pluginConfig.callme)
-    .plugin(echo, pluginConfig.echo)
-    .plugin(exit, pluginConfig.exit)
-    .plugin(help, pluginConfig.help)
-    .plugin(rank, pluginConfig.rank)
-    .plugin(repeater, pluginConfig.repeater)
-    .plugin(requestHandler, pluginConfig.requestHandler)
-    .plugin(respondent, pluginConfig.respondent)
-    .plugin(welcome, pluginConfig.welcome)
+    .plugin(admin, options.admin)
+    .plugin(broadcast, options.broadcast)
+    .plugin(callme, options.callme)
+    .plugin(echo, options.echo)
+    .plugin(exit, options.exit)
+    .plugin(help, options.help)
+    .plugin(rank, options.rank)
+    .plugin(repeater, options.repeater)
+    .plugin(requestHandler, options.requestHandler)
+    .plugin(respondent, options.respondent)
+    .plugin(welcome, options.welcome)
 }
