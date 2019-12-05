@@ -1,12 +1,13 @@
 {
   "name": "koishi-plugin-common",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "author": "Shigma <1700011071@pku.edu.cn>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint src --ext .ts"
+    "lint": "eslint src --ext .ts",
+    "prepack": "tsc -b"
   },
   "devDependencies": {
     "@types/node": "^12.12.14",
@@ -18,10 +19,12 @@
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "husky": "^3.1.0",
+    "koishi-database-mysql": "0.1.2",
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "koishi-core": "^0.1.1",
+    "koishi-core": "^0.2.1",
     "koishi-utils": "^0.1.4"
   }
 }

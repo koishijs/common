@@ -2,7 +2,7 @@ import { Context, User, userFlags, UserFlag, Meta, UserField, getTargetId, Comma
 import { isInteger, complement, Observed, paramCase } from 'koishi-utils'
 
 type ActionCallback <T extends {}, K extends keyof T> =
-  (this: Context, meta: Meta, target: Observed<Pick<T, K>>, ...args: string[]) => Promise<void>
+  (this: Context, meta: Meta, target: Observed<Pick<T, K>>, ...args: string[]) => Promise<any>
 
 export interface UserAction {
   callback: ActionCallback<UserData, UserField>

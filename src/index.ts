@@ -1,5 +1,6 @@
 import { Context, CommandConfig } from 'koishi-core'
 import admin from './admin'
+import authorize from './authorize'
 import broadcast, { BroadcastOptions } from './broadcast'
 import callme, { CallmeOptions } from './callme'
 import echo from './echo'
@@ -12,13 +13,15 @@ import respondent, { Respondent } from './respondent'
 import welcome, { WelcomeMessage } from './welcome'
 
 export * from './admin'
-export * from './echo'
+export * from './authorize'
+export * from './exit'
 export * from './rank'
 
-export { admin, broadcast, callme, echo, exit, help, rank, repeater, requestHandler, respondent, welcome }
+export { admin, authorize, broadcast, callme, echo, exit, help, rank, repeater, requestHandler, respondent, welcome }
 
 interface CommonPluginOptions {
   admin?: false | CommandConfig
+  authorize?: false | Record<number, number>
   broadcast?: false | BroadcastOptions
   callme?: false | CallmeOptions
   echo?: false | CommandConfig
@@ -33,9 +36,10 @@ interface CommonPluginOptions {
 
 export const name = 'common'
 
-export function apply (ctx: Context, options: CommonPluginOptions) {
+export function apply (ctx: Context, options: CommonPluginOptions = {}) {
   ctx
     .plugin(admin, options.admin)
+    .plugin(authorize, options.authorize)
     .plugin(broadcast, options.broadcast)
     .plugin(callme, options.callme)
     .plugin(echo, options.echo)

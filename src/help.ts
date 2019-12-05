@@ -1,4 +1,4 @@
-import { Context, Command, isAncestor, UserData, Meta, CommandConfig } from 'koishi-core'
+import { Context, Command, isAncestor, UserData, CommandConfig, MessageMeta } from 'koishi-core'
 
 export default function apply (ctx: Context, options: CommandConfig) {
   ctx.command('help [command]', '显示帮助信息', { authority: 0, ...options })
@@ -26,7 +26,7 @@ function getShortcuts (command: Command, user: UserData) {
   })
 }
 
-function getCommands (context: Context, meta: Meta, parent?: Command) {
+function getCommands (context: Context, meta: MessageMeta, parent?: Command) {
   const commands = parent
     ? parent.children
     : context.app._commands.filter(cmd => isAncestor(cmd.context.path, meta.$path))
@@ -35,13 +35,13 @@ function getCommands (context: Context, meta: Meta, parent?: Command) {
     .sort((a, b) => a.name > b.name ? 1 : a.name < b.name ? -1 : 0)
 }
 
-function showGlobalShortcut (context: Context, meta: Meta) {
+function showGlobalShortcut (context: Context, meta: MessageMeta) {
   const commands = getCommands(context, meta)
   const shortcuts = [].concat(...commands.map(command => getShortcuts(command, meta.$user)))
   return meta.$send(`当前可用的全局指令有：${shortcuts.join('，')}。`)
 }
 
-function getCommandList (context: Context, meta: Meta, parent: Command, expand: boolean) {
+function getCommandList (context: Context, meta: MessageMeta, parent: Command, expand: boolean) {
   let commands = getCommands(context, meta, parent)
   if (!expand) {
     commands = commands.filter(cmd => cmd.parent === parent)
@@ -60,7 +60,7 @@ function getCommandList (context: Context, meta: Meta, parent: Command, expand: 
   return output
 }
 
-function showGlobalHelp (context: Context, meta: Meta, options: any) {
+function showGlobalHelp (context: Context, meta: MessageMeta, options: any) {
   return meta.$send([
     '当前可用的指令有（括号内为对应的最低权限等级，标有星号的表示含有子指令）：',
     ...getCommandList(context, meta, null, options.expand),
@@ -72,7 +72,7 @@ function showGlobalHelp (context: Context, meta: Meta, options: any) {
   ].join('\n'))
 }
 
-async function showCommandHelp (command: Command, meta: Meta, options: any) {
+async function showCommandHelp (command: Command, meta: MessageMeta, options: any) {
   const output = [command.rawName, command.config.description]
   if (command.context.database) {
     meta.$user = await command.context.database.observeUser(meta.userId)
@@ -98,7 +98,7 @@ async function showCommandHelp (command: Command, meta: Meta, options: any) {
       const nextUsage = usage.last ? (Math.max(0, minInterval + usage.last - Date.now()) / 1000).toFixed() : 0
       output.push(`距离下次调用还需：${nextUsage}/${minInterval / 1000} 秒。`)
     }
-  
+
     if (authorityHint) {
       output.push(authorityHint)
     } else if (authority > 1) {

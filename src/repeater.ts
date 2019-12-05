@@ -56,7 +56,7 @@ function getText (sessionText: SessionText, userId: number, message: string) {
 export default function apply (ctx: GroupContext, options: RepeaterOptions) {
   options = { ...defaultOptions, ...options }
 
-  ctx.app.receiver.on('send/group', ({ groupId, message }) => {
+  ctx.app.groups.receiver.on('send', ({ groupId, message }) => {
     const state = getState(groupId)
     state.repeated = true
     if (state.message === message) {
@@ -68,7 +68,7 @@ export default function apply (ctx: GroupContext, options: RepeaterOptions) {
     }
   })
 
-  ctx.middleware(({ message, groupId, userId, $send, $group }, next) => {
+  ctx.premiddleware(({ message, groupId, userId, $send, $group }, next) => {
     const state = getState(groupId)
     if (!$group || $group.assignee !== ctx.app.options.selfId) return next()
     if (message === state.message) {
@@ -93,5 +93,5 @@ export default function apply (ctx: GroupContext, options: RepeaterOptions) {
       state.users = new Set([userId])
     }
     return next()
-  }, 0)
+  })
 }

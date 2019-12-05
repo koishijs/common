@@ -1,4 +1,4 @@
-import { MessageType, Context, CommandConfig } from 'koishi-core'
+import { MetaTypeMap, Context, CommandConfig } from 'koishi-core'
 
 export default function (ctx: Context, options: CommandConfig) {
   ctx.command('echo <message...>', '向多个上下文发送广播', { authority: 2, ...options })
@@ -11,7 +11,7 @@ export default function (ctx: Context, options: CommandConfig) {
         private: options.user ? options.user.split(',') : [],
         group: options.group ? options.group.split(',') : [],
         discuss: options.discuss ? options.discuss.split(',') : [],
-      } as Record<MessageType, number[]>
+      } as Record<MetaTypeMap['message'], number[]>
       if (!channels.private.length && !channels.group.length && !channels.discuss.length) {
         channels[meta.messageType].push(meta.messageType === 'private' ? meta.userId : meta[meta.messageType + 'Id'])
       }
