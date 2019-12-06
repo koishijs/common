@@ -119,7 +119,7 @@ export default function apply (ctx: Context, options: CommandConfig) {
         if (options.user) {
           const qq = getTargetId(options.user)
           if (!qq) return meta.$send('未指定目标。')
-          user = await ctx.database.observeUser(qq, 0, fields)
+          user = await ctx.database.observeUser(qq, -1, fields)
           if (!user) return meta.$send('未找到用户。')
           if (qq !== meta.$user.id && meta.$user.authority <= user.authority) return meta.$send('权限不足。')
         } else {
