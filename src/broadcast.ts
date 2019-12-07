@@ -1,7 +1,5 @@
-import { Context, apps, CommandConfig } from 'koishi-core'
+import { Context, appMap, CommandConfig } from 'koishi-core'
 import { sleep } from 'koishi-utils'
-
-const BROADCAST_INTERVAL = 1000
 
 export interface BroadcastOptions extends CommandConfig {
   broadcastInterval?: number
@@ -26,9 +24,9 @@ export default function apply (ctx: Context, options: BroadcastOptions = {}) {
       }
       Object.keys(assignMap).forEach(async (id: any) => {
         const groups = assignMap[id]
-        const { sender } = apps[id]
+        const { sender } = appMap[id]
         for (let index = 0; index < groups.length; index++) {
-          if (index) await sleep(BROADCAST_INTERVAL)
+          if (index) await sleep(options.broadcastInterval)
           await sender.sendGroupMsg(groups[index], message)
         }
       })
