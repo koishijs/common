@@ -1,6 +1,6 @@
 {
   "name": "koishi-plugin-common",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "author": "Shigma <1700011071@pku.edu.cn>",
@@ -24,7 +24,7 @@
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "koishi-core": "^0.2.1",
-    "koishi-utils": "^0.1.4"
+    "koishi-core": "^0.2.3",
+    "koishi-utils": "^0.1.6"
   }
 }
