@@ -1,0 +1,38 @@
+{
+  "description": "常用 Koishi 插件合集",
+  "themeConfig": {
+    "sidebar": [
+      {
+        "text": "Developing Guide",
+        "items": [
+          {
+            "text": "Overview",
+            "link": "./index.md"
+          }
+        ]
+      },
+      {
+        "text": "Plugins",
+        "items": [
+          {
+            "text": "Sudo",
+            "link": "./plugins/sudo.md"
+          }
+        ]
+      },
+      {
+        "text": "More",
+        "items": [
+          {
+            "text": "Koishi 官网",
+            "link": "https://koishi.chat"
+          },
+          {
+            "text": "支持作者",
+            "link": "https://afdian.net/a/shigma"
+          }
+        ]
+      }
+    ]
+  }
+}
