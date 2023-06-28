@@ -1,14 +1,9 @@
 {
+  "extends": "./tsconfig.base",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "incremental": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "declaration": true,
-    "outDir": "dist"
+    "baseUrl": ".",
+    "paths": {
+      "koishi-plugin-*": ["packages/*/src"],
+    },
   },
-  "include": [
-    "src"
-  ]
 }
