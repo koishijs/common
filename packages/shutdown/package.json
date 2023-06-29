@@ -1,0 +1,65 @@
+{
+  "name": "koishi-plugin-shutdown",
+  "description": "shutdown(8) for Koishi.",
+  "version": "0.3.0",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "author": {
+    "name": "Il Harper",
+    "email": "afanyiyu@hotmail.com",
+    "url": "https://ilharper.com"
+  },
+  "contributors": [
+    {
+      "name": "Il Harper",
+      "email": "afanyiyu@hotmail.com",
+      "url": "https://ilharper.com"
+    },
+    "shigma <shigma10826@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://common.koishi.chat/plugins/shutdown.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koishijs/common.git",
+    "directory": "packages/shutdown"
+  },
+  "bugs": {
+    "url": "https://github.com/koishijs/common/issues"
+  },
+  "keywords": [
+    "chatbot",
+    "koishi",
+    "plugin",
+    "exit",
+    "shutdown",
+    "reboot",
+    "poweroff",
+    "quit",
+    "terminate",
+    "kill",
+    "halt",
+    "stop",
+    "common"
+  ],
+  "koishi": {
+    "description": {
+      "en": "[shutdown(8)](https://www.freedesktop.org/software/systemd/man/shutdown.html) for Koishi. Shutdown and reboot the bot, with scheduling and cancellation.",
+      "zh": "适用于 Koishi 的 [shutdown(8)](https://www.freedesktop.org/software/systemd/man/shutdown.html)。关闭和重启机器人，支持定时和取消。"
+    },
+    "locales": [
+      "en",
+      "zh"
+    ]
+  },
+  "devDependencies": {
+    "koishi": "^4.12.4"
+  },
+  "peerDependencies": {
+    "koishi": "^4.10.6"
+  }
+}
