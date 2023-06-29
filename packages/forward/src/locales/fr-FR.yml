@@ -1,0 +1,23 @@
+commands:
+  forward:
+    description: Définir la règle du transfert de message
+    usage: 'ID de canal actuel : {cid}'
+  forward.add:
+    description: Ajouter un canal pour transfert de message
+    messages:
+      unchanged: '{0} est déjà le canal cible du canal actuel pour transfert de message.'
+      updated: 'Le canal pour transfert de message {0} a été ajouté avec succès.'
+  forward.remove:
+    description: Supprimer le canal pour transfert de message.
+    messages:
+      unchanged: '{0} n''est pas le canal du canal actuel pour transfert de message.'
+      updated: 'Le canal pour transfert de message {0} a été supprimé avec succès.'
+  forward.clear:
+    description: Supprimer tous les canaux pour transfert de message.
+    messages:
+      updated: 'Tous les canaux pour transfert de message ont été supprimés avec succès.'
+  forward.list:
+    description: Voir la liste des canaux pour transfert de message.
+    messages:
+      empty: 'Le canal actuel ne définir pas le canal pour transfert de message.'
+      header: 'Les canaux de canal actuel pour transfert de message :'
