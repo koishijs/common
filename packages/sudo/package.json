@@ -28,7 +28,8 @@
     "context",
     "sudo",
     "simulate",
-    "mock"
+    "mock",
+    "common"
   ],
   "koishi": {
     "browser": true,

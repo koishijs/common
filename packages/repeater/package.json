@@ -1,0 +1,45 @@
+{
+  "name": "koishi-plugin-repeater",
+  "version": "1.0.0",
+  "description": "Repeater plugin for Koishi",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "author": "Shigma <shigma10826@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://common.koishi.chat/plugins/repeater.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koishijs/common.git",
+    "directory": "packages/repeater"
+  },
+  "bugs": {
+    "url": "https://github.com/koishijs/common/issues"
+  },
+  "keywords": [
+    "bot",
+    "chatbot",
+    "koishi",
+    "plugin",
+    "echo",
+    "repeater",
+    "common"
+  ],
+  "koishi": {
+    "browser": true,
+    "description": {
+      "en": "A repeater plugin with more features",
+      "zh": "复读机插件，支持自动复读、打断复读和更多功能"
+    }
+  },
+  "devDependencies": {
+    "@koishijs/plugin-mock": "^2.3.2",
+    "koishi": "^4.13.5"
+  },
+  "peerDependencies": {
+    "koishi": "^4.13.5"
+  }
+}

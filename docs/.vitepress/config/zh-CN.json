@@ -23,6 +23,10 @@
             "link": "/plugins/forward.md"
           },
           {
+            "text": "Repeater",
+            "link": "/plugins/repeater.md"
+          },
+          {
             "text": "Sudo",
             "link": "/plugins/sudo.md"
           }
