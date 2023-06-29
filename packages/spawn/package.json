@@ -1,0 +1,53 @@
+{
+  "name": "koishi-plugin-spawn",
+  "version": "1.0.4",
+  "description": "Run shell commands with Koishi",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "author": "Dragon-Fish <dragon-fish@qq.com>",
+  "contributors": [
+    "Shigma <shigma10826@gmail.com>",
+    "Dragon-Fish <dragon-fish@qq.com>"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://common.koishi.chat/plugins/spawn.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koishijs/common.git",
+    "directory": "packages/spawn"
+  },
+  "bugs": {
+    "url": "https://github.com/koishijs/common/issues"
+  },
+  "keywords": [
+    "bot",
+    "chatbot",
+    "koishi",
+    "plugin",
+    "spawn",
+    "exec",
+    "process",
+    "shell",
+    "command",
+    "terminal",
+    "common"
+  ],
+  "koishi": {
+    "description": {
+      "en": "Run shell commands with Koishi",
+      "zh": "使用 Koishi 运行终端命令"
+    }
+  },
+  "devDependencies": {
+    "@koishijs/plugin-help": "^2.0.2",
+    "@koishijs/plugin-mock": "^2.3.2",
+    "koishi": "^4.11.4"
+  },
+  "peerDependencies": {
+    "koishi": "^4.10.0"
+  }
+}

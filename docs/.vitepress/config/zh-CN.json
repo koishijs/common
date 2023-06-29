@@ -27,6 +27,10 @@
             "link": "/plugins/repeater.md"
           },
           {
+            "text": "Spawn",
+            "link": "/plugins/spawn.md"
+          },
+          {
             "text": "Sudo",
             "link": "/plugins/sudo.md"
           }
