@@ -19,6 +19,10 @@
             "link": "/plugins/feedback.md"
           },
           {
+            "text": "Forward",
+            "link": "/plugins/forward.md"
+          },
+          {
             "text": "Sudo",
             "link": "/plugins/sudo.md"
           }
