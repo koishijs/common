@@ -1,0 +1,50 @@
+{
+  "name": "koishi-plugin-respondent",
+  "description": "Respondent plugin for Koishi",
+  "version": "6.0.0",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "contributors": [
+    "Shigma <shigma10826@gmail.com>"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koishijs/koishi-plugin-respondent.git"
+  },
+  "bugs": {
+    "url": "https://github.com/koishijs/koishi-plugin-respondent/issues"
+  },
+  "homepage": "https://github.com/koishijs/koishi-plugin-respondent",
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "koishi": {
+    "category": "tool",
+    "description": {
+      "en": "Automatic responding through custom rules",
+      "zh": "自动回复插件，允许设置一套自定义问答规则"
+    }
+  },
+  "keywords": [
+    "chatbot",
+    "koishi",
+    "plugin",
+    "respondent",
+    "matcher",
+    "rule",
+    "dialogue",
+    "shortcut",
+    "common"
+  ],
+  "devDependencies": {
+    "koishi": "^4.13.0"
+  },
+  "peerDependencies": {
+    "koishi": "^4.13.0"
+  }
+}

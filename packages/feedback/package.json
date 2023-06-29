@@ -18,7 +18,7 @@
     "directory": "packages/feedback"
   },
   "bugs": {
-    "url": "https://github.com/koishijs/koishi-plugin-feedback/issues"
+    "url": "https://github.com/koishijs/common/issues"
   },
   "keywords": [
     "bot",
@@ -28,7 +28,8 @@
     "issue",
     "feedback",
     "ticket",
-    "report"
+    "report",
+    "common"
   ],
   "koishi": {
     "browser": true,
