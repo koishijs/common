@@ -7,7 +7,7 @@
         "items": [
           {
             "text": "总览",
-            "link": "./index.md"
+            "link": "/index.md"
           }
         ]
       },
@@ -15,8 +15,12 @@
         "text": "插件",
         "items": [
           {
+            "text": "Feedback",
+            "link": "/plugins/feedback.md"
+          },
+          {
             "text": "Sudo",
-            "link": "./plugins/sudo.md"
+            "link": "/plugins/sudo.md"
           }
         ]
       },
