@@ -30,7 +30,7 @@ export interface State {
 export const name = 'spawn'
 
 export function apply(ctx: Context, config: Config) {
-  ctx.i18n.define('zh', require('./locales/zh-CN'))
+  ctx.i18n.define('zh-CN', require('./locales/zh-CN'))
 
   ctx.command('exec <command:text>')
     .action(async ({ session }, command) => {

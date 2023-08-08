@@ -14,7 +14,7 @@ function parsePlatform(target: string) {
 }
 
 export function apply(ctx: Context) {
-  ctx.i18n.define('zh', require('./locales/zh-CN'))
+  ctx.i18n.define('zh-CN', require('./locales/zh-CN'))
 
   ctx.command('sudo <command:text>', { authority: 3 })
     .userFields(['authority'])
@@ -25,7 +25,7 @@ export function apply(ctx: Context) {
       if (!message) return session.text('.expect-command')
 
       if (options.member) {
-        if (session.subtype === 'private') {
+        if (session.isDirect) {
           return session.text('.invalid-private-member')
         }
         options.channel = session.cid
@@ -42,6 +42,7 @@ export function apply(ctx: Context) {
 
       if (!options.channel) {
         sess.subtype = 'private'
+        sess.isDirect = true
       } else if (options.channel !== session.cid) {
         sess.channelId = parsePlatform(options.channel)[1]
         sess.subtype = 'group'

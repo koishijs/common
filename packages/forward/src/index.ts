@@ -4,6 +4,12 @@ declare module 'koishi' {
   interface Channel {
     forward: string[]
   }
+
+  namespace Channel {
+    interface Prelude {
+      forward: string[]
+    }
+  }
 }
 
 export interface Rule {
@@ -48,11 +54,11 @@ export const Config: Schema<Config> = Schema.intersect([
 ] as const)
 
 export function apply(ctx: Context, config: Config) {
-  ctx.i18n.define('zh', require('./locales/zh-CN'))
+  ctx.i18n.define('zh-CN', require('./locales/zh-CN'))
 
   const relayMap: Dict<Rule> = {}
 
-  async function sendRelay(session: Session, rule: Partial<Rule>) {
+  async function sendRelay(session: Session<never, 'forward'>, rule: Partial<Rule>) {
     const { author, parsed } = session
     let { content } = parsed
     if (!content) return
@@ -98,9 +104,9 @@ export function apply(ctx: Context, config: Config) {
     }
   }
 
-  ctx.middleware(async (session: Session<never, 'forward'>, next) => {
-    const { quote = {}, subtype } = session
-    if (subtype !== 'group') return
+  ctx.middleware(async (session: Session, next) => {
+    const { quote = {}, isDirect } = session
+    if (isDirect) return
     const data = relayMap[quote.messageId]
     if (data) return sendRelay(session, data)
 
