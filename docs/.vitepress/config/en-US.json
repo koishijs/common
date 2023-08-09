@@ -15,23 +15,27 @@
         "text": "Plugins",
         "items": [
           {
-            "text": "Feedback",
+            "text": "发送反馈 (Feedback)",
             "link": "/plugins/feedback.md"
           },
           {
-            "text": "Forward",
+            "text": "消息转发 (Forward)",
             "link": "/plugins/forward.md"
           },
           {
-            "text": "Repeater",
+            "text": "Rate Limiting (Rate Limit)",
+            "link": "/plugins/rate-limit.md"
+          },
+          {
+            "text": "复读机 (Repeater)",
             "link": "/plugins/repeater.md"
           },
           {
-            "text": "Spawn",
+            "text": "执行命令 (Spawn)",
             "link": "/plugins/spawn.md"
           },
           {
-            "text": "Sudo",
+            "text": "模拟调用 (Sudo)",
             "link": "/plugins/sudo.md"
           }
         ]
