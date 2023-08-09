@@ -1,5 +1,9 @@
 # koishi-plugin-sudo
 
+::: tip
+要使用本插件，你需要安装数据库支持。
+:::
+
 koishi-plugin-sudo 提供了名为 sudo 的指令，允许管理员模拟其他用户调用指令。
 
 ## 指令：sudo
