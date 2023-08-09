@@ -1,6 +1,6 @@
 # koishi-plugin-forward
 
-@koishijs/plugin-forward 支持在不同的频道之间转发消息。它有两种使用方法：
+koishi-plugin-forward 支持在不同的频道之间转发消息。它有两种使用方法：
 
 ## 无数据库模式
 
