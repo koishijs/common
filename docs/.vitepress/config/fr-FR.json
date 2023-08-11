@@ -41,6 +41,10 @@
           {
             "text": "模拟调用 (Sudo)",
             "link": "/plugins/sudo.md"
+          },
+          {
+            "text": "处理申请 (Verifier)",
+            "link": "/plugins/verifier.md"
           }
         ]
       },
