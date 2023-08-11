@@ -27,6 +27,10 @@
             "link": "/plugins/rate-limit.md"
           },
           {
+            "text": "撤回消息 (Recall)",
+            "link": "/plugins/recall.md"
+          },
+          {
             "text": "复读机 (Repeater)",
             "link": "/plugins/repeater.md"
           },
