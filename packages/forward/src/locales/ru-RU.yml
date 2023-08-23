@@ -1,9 +1,9 @@
 commands:
   forward:
-    description: 设置消息转发
-    usage: 当前频道 ID：{cid}
+    description: Настройка переадресации сообщений
+    usage: Текущий канал：{cid}
   forward.add:
-    description: 添加目标频道
+    description: Добавить целевой канал
     messages:
       unchanged: '{0} 已经是当前频道的目标频道。'
       updated: '已成功添加目标频道 {0}。'
