@@ -31,12 +31,12 @@ plugins:
 
 如果已经加载了数据库服务，那么上述规则列表将失效。此时插件会提供指令来管理转发规则。
 
-| 指令语法                             | 简写形式        | 功能描述     |
-| -------------------------------- | ----------- | -------- |
-| `forward add <channel>`    | `fwd add`   | 添加目标频道   |
-| `forward remove <channel>` | `fwd rm`    | 移除目标频道   |
-| `forward clear`                  | `fwd clear` | 移除全部目标频道 |
-| `forward list`                   | `fwd ls`    | 查看目标频道列表 |
+| 指令语法                             | 简写形式        | 功能描述                   |
+| -------------------------------- | ----------- | ---------------------- |
+| `forward add <channel>`    | `fwd add`   | Добавить целевой канал |
+| `forward remove <channel>` | `fwd rm`    | 移除目标频道                 |
+| `forward clear`                  | `fwd clear` | 移除全部目标频道               |
+| `forward list`                   | `fwd ls`    | 查看目标频道列表               |
 
 ::: warning
 上述 `<channel>` 的语法是 `#{platform}:{channelId}`，前置的 `#` 字符不可忽略，请注意与配置项的不同。
