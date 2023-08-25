@@ -4,12 +4,6 @@ declare module 'koishi' {
   interface Channel {
     forward: string[]
   }
-
-  namespace Channel {
-    interface Prelude {
-      forward: string[]
-    }
-  }
 }
 
 export interface Rule {
@@ -104,7 +98,7 @@ export function apply(ctx: Context, config: Config) {
     }
   }
 
-  ctx.middleware(async (session: Session, next) => {
+  ctx.middleware(async (session: Session<never, 'forward'>, next) => {
     const { quote = {}, isDirect } = session
     if (isDirect) return
     const data = relayMap[quote.messageId]

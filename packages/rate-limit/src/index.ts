@@ -111,7 +111,7 @@ export function apply(ctx: Context) {
   })
 
   // extend command help
-  ctx.on('help/command', (output, command, session) => {
+  ctx.on('help/command', (output, command, session: Session<'authority'>) => {
     if (bypassRateLimit(session, command)) return
 
     const user = session.user as User.Observed
