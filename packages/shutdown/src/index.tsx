@@ -1,19 +1,5 @@
 import { Context, Schema } from 'koishi'
 
-declare module 'koishi' {
-  interface EnvData {
-    shutdown: ShutdownInfo
-  }
-}
-
-interface ShutdownInfo {
-  subtype: string
-  channelId: string
-  guildId: string
-  sid: string
-  message: string
-}
-
 export const name = 'shutdown'
 
 export const Config: Schema<{}> = Schema.object({})
@@ -27,20 +13,8 @@ interface Pending {
 export function apply(ctx: Context) {
   const pendings: Pending[] = []
 
-  ctx.i18n.define('zh', require('./locales/zh-CN'))
-  ctx.i18n.define('en', require('./locales/en-US'))
-
-  const info = ctx.envData.shutdown
-  if (info) {
-    const { sid, channelId, guildId, message } = info
-    ctx.envData.shutdown = null
-    const dispose = ctx.on('bot-status-updated', (bot) => {
-      if (bot.sid !== sid || bot.status !== 'online') return
-      dispose()
-      // FIXME waiting for subtype support
-      bot.sendMessage(channelId, message, guildId)
-    })
-  }
+  ctx.i18n.define('zh-CN', require('./locales/zh-CN'))
+  ctx.i18n.define('en-US', require('./locales/en-US'))
 
   ctx
     .command('shutdown [time:string] [wall:text]', { authority: 4 })
@@ -78,14 +52,14 @@ export function apply(ctx: Context) {
       if (time === '+0' || time === 'now') parsedTime = 0
       else if (!parsedTime) return session.text('.invalid-time', [time])
 
-      const { subtype, channelId, guildId, sid } = session
+      const { isDirect, channelId, guildId, sid } = session
       const code = options.reboot ? 51 : options.rebootHard ? 52 : 0
       const date = new Date(new Date().getTime() + parsedTime)
       const action = code ? 'reboot' : 'poweroff'
       const timer = setTimeout(() => {
         if (!ctx.loader) process.exit(code)
-        const message = session.text('.restarted')
-        ctx.envData.shutdown = { subtype, channelId, guildId, sid, message }
+        const content = session.text('.restarted')
+        ctx.envData.message = { isDirect, channelId, guildId, sid, content }
         ctx.loader.fullReload(code)
       }, parsedTime)
 
