@@ -1,6 +1,6 @@
 # koishi-plugin-shutdown
 
-koishi-plugin-shutdown 提供了适用于 Koishi 的 [shutdown(8)](https://www.freedesktop.org/software/systemd/man/shutdown.html)。关闭和重启机器人，支持定时和取消。
+koishi-plugin-shutdown 提供了适用于 Koishi 的 [shutdown(8)](https://www.freedesktop.org/software/systemd/man/shutdown.html)。通过指令关闭和重启机器人，支持定时和取消。
 
 ## 指令：shutdown
 

@@ -25,6 +25,7 @@
   "devDependencies": {
     "@koishijs/eslint-config": "^1.0.4",
     "@koishijs/vitepress": "^3.0.0",
+    "@sinonjs/fake-timers": "^6.0.1",
     "@types/chai": "^4.3.5",
     "@types/mocha": "^9.1.1",
     "@types/node": "^20.4.2",

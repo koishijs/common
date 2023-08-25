@@ -39,7 +39,11 @@
             "link": "/plugins/respondent.md"
           },
           {
-            "text": "关机重启 (Shutdown)",
+            "text": "计划任务 (Schedule)",
+            "link": "/plugins/schedule.md"
+          },
+          {
+            "text": "关闭与重启 (Shutdown)",
             "link": "/plugins/shutdown.md"
           },
           {
