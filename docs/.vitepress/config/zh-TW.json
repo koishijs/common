@@ -35,6 +35,14 @@
             "link": "/plugins/repeater.md"
           },
           {
+            "text": "自定义回复 (Respondent)",
+            "link": "/plugins/respondent.md"
+          },
+          {
+            "text": "关机重启 (Shutdown)",
+            "link": "/plugins/shutdown.md"
+          },
+          {
             "text": "执行命令 (Spawn)",
             "link": "/plugins/spawn.md"
           },
