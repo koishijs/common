@@ -19,31 +19,27 @@ export function apply(ctx: Context) {
   ctx.command('sudo <command:text>', { authority: 3 })
     .userFields(['authority'])
     .option('user', '-u [id:user]')
-    .option('member', '-m [id:user]')
     .option('channel', '-c [id:channel]')
+    .option('direct', '-C, -d')
     .action(async ({ session, options }, message) => {
       if (!message) return session.text('.expect-command')
 
-      if (options.member) {
-        if (session.isDirect) {
-          return session.text('.invalid-private-member')
-        }
-        options.channel = session.cid
-        options.user = options.member
+      if (options.channel && options.direct) {
+        return session.text('.direct-channel')
       }
 
-      if (!options.user && !options.channel) {
+      if (!options.user && !options.channel && !options.direct) {
         return session.text('.expect-context')
       }
 
+      // create new session
       const sess = new Session(session.bot, session)
-      sess.send = session.send.bind(session)
-      sess.sendQueued = session.sendQueued.bind(session)
 
-      if (!options.channel) {
+      // patch channel
+      if (options.direct) {
         sess.subtype = 'private'
         sess.isDirect = true
-      } else if (options.channel !== session.cid) {
+      } else if (options.channel && options.channel !== session.cid) {
         sess.channelId = parsePlatform(options.channel)[1]
         sess.subtype = 'group'
         await sess.observeChannel()
@@ -51,22 +47,23 @@ export function apply(ctx: Context) {
         sess.channel = session.channel
       }
 
+      // patch user
       if (options.user && options.user !== session.uid) {
         sess.userId = sess.author.userId = parsePlatform(options.user)[1]
         const user = await sess.observeUser(['authority'])
         if (session.user.authority <= user.authority) {
           return session.text('internal.low-authority')
         }
+        if (!sess.isDirect) {
+          const info = await session.bot.getGuildMember?.(sess.guildId, sess.userId).catch(() => ({}))
+          Object.assign(sess.author, info)
+        } else {
+          const info = await session.bot.getUser?.(sess.userId).catch(() => ({}))
+          Object.assign(sess.author, info)
+        }
       } else {
         sess.user = session.user
-      }
-
-      if (options.member) {
-        const info = await session.bot.getGuildMember?.(sess.guildId, sess.userId).catch(() => ({}))
-        Object.assign(sess.author, info)
-      } else if (options.user) {
-        const info = await session.bot.getUser?.(sess.userId).catch(() => ({}))
-        Object.assign(sess.author, info)
+        sess.author = session.author
       }
 
       await sess.execute(message)
