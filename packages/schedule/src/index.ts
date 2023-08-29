@@ -1,4 +1,4 @@
-import { Context, Dict, Logger, Schema, Session, Time } from 'koishi'
+import { Computed, Context, Dict, Logger, Schema, Session, Time } from 'koishi'
 
 declare module 'koishi' {
   interface Tables {
@@ -22,11 +22,11 @@ export const name = 'schedule'
 export const using = ['database'] as const
 
 export interface Config {
-  minInterval?: number
+  minInterval?: Computed<number>
 }
 
 export const Config: Schema<Config> = Schema.object({
-  minInterval: Schema.natural().role('ms').description('允许的最小时间间隔。').default(Time.minute),
+  minInterval: Schema.computed(Schema.natural().role('ms')).description('允许的最小时间间隔。').default(Time.minute),
 })
 
 function toHourMinute(time: Date) {
@@ -192,7 +192,7 @@ export function apply(ctx: Context, { minInterval }: Config) {
       const interval = Time.parseTime(options.interval)
       if (!interval && options.interval) {
         return session.text('.interval-invalid')
-      } else if (interval && interval < minInterval) {
+      } else if (interval && interval < session.resolve(minInterval)) {
         return session.text('.interval-too-short')
       }
 
