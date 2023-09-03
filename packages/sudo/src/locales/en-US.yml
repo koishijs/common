@@ -1,0 +1,11 @@
+commands:
+  sudo:
+    description: Trigger command in specific context
+    options:
+      user: Use user private chat context
+      member: Use current channel member context
+      channel: Specify target channel context
+    messages:
+      expect-command: Please enter the command to trigger.
+      expect-context: Please provide a new context.
+      invalid-private-member: Cannot use --member option in private chat context.
