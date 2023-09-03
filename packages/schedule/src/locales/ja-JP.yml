@@ -1,0 +1,36 @@
+general:
+  days:
+    - 日曜日
+    - 月曜日
+    - 火曜日
+    - 水曜日
+    - 木曜日
+    - 金曜日
+    - 土曜日
+  everyday: 毎日 {0}
+  everyweek: 毎週{0} {1}
+  interval: <i18n:time value={0}/> ごとに (残り <i18n:time value={1}/>)
+commands:
+  schedule:
+    description: コマンドをスケジュールする
+    options:
+      rest: 実行するコマンドを指定
+      interval: 繰り返す間隔の秒数を指定する
+      list: 設定されたスケジュールを表示する
+      ensure: 設定された時間を過ぎても実行を保証する
+      full: すべてのコンテキストから検索する
+      delete: 設定されたスケジュールを削除する
+    messages:
+      context: '、コンテキスト：{0}'
+      context.private: ダイレクトメッセージ {userId}
+      context.guild: チャンネル {channelId}
+      delete-success: スケジュール {0} は削除されました。
+      create-success: スケジュールが作成され、番号は {0} です。
+      list-empty: 実行待ちのスケジュールはありません。
+      command-expected: 実行するコマンドを入力してください。
+      date-invalid: 有効な日付を入力してください。
+      date-invalid-suggestion: 有効な日付を入力してください。入力したいのは {0}s ですか？
+      date-expected: 実行時間を入力してください。
+      date-past: 過去の時間を実行時間として指定することはできません。
+      interval-invalid: 有効な時間間隔を入力してください。
+      interval-too-short: 時間間隔は短すぎます。
