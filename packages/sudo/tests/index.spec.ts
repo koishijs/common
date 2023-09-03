@@ -1,6 +1,7 @@
 import { App } from 'koishi'
 import mock from '@koishijs/plugin-mock'
 import memory from '@koishijs/plugin-database-memory'
+import * as rate from 'koishi-plugin-rate-limit'
 import * as sudo from '../src'
 
 describe('koishi-plugin-sudo', () => {
@@ -10,21 +11,21 @@ describe('koishi-plugin-sudo', () => {
   app.plugin(mock)
   app.plugin(sudo)
 
-  const client1 = app.mock.client('123')
-  const client2 = app.mock.client('123', '456')
-
-  app.command('show-context')
+  app.command('show-context', { authority: 2 })
     .userFields(['id'])
     .channelFields(['id'])
     .action(({ session }) => {
       return `${session!.userId},${session!.user?.id},${session!.channel?.id}`
     })
 
+  const client1 = app.mock.client('123')
+  const client2 = app.mock.client('123', '456')
+
   before(async () => {
     await app.start()
-    await app.mock.initUser('123', 4)
-    await app.mock.initUser('456', 3)
-    await app.mock.initUser('789', 5)
+    await app.mock.initUser('123', 3)
+    await app.mock.initUser('456', 1)
+    await app.mock.initUser('789', 4)
     await app.mock.initChannel('456')
   })
 

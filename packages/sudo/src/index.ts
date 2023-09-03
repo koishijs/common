@@ -34,6 +34,7 @@ export function apply(ctx: Context) {
 
       // create new session
       const sess = new Session(session.bot, session)
+      sess[Session.shadow] = session
 
       // patch channel
       if (options.direct) {
@@ -67,5 +68,10 @@ export function apply(ctx: Context) {
       }
 
       await sess.execute(message)
+      await Promise.all([
+        sess.user?.$update(),
+        sess.channel?.$update(),
+        sess.guild?.$update(),
+      ])
     })
 }

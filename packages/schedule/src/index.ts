@@ -34,7 +34,7 @@ function toHourMinute(time: Date) {
 }
 
 export function apply(ctx: Context, { minInterval }: Config) {
-  ctx.i18n.define('zh', require('./locales/zh-CN'))
+  ctx.i18n.define('zh-CN', require('./locales/zh-CN'))
 
   function formatInterval(date: Date, interval: number, session: Session<never, never>) {
     if (!interval) {
