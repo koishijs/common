@@ -1,0 +1,36 @@
+general:
+  days:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+  everyday: '{0} every day'
+  everyweek: '{1} every {0}'
+  interval: every <i18n:time value={0}/> (<i18n:time value={1}/> remains)
+commands:
+  schedule:
+    description: Set scheduled command
+    options:
+      rest: Command
+      interval: Set execution interval
+      list: Show all scheduled tasks
+      ensure: 错过时间也确保执行
+      full: 查找全部上下文
+      delete: 删除已经设置的日程
+    messages:
+      context: ', context: {0}'
+      context.private: private {userId}
+      context.guild: channel {channelId}
+      delete-success: Schedule {0} was deleted.
+      create-success: Schedule created with number {0}.
+      list-empty: There are currently no pending schedules.
+      command-expected: Please enter the command to execute.
+      date-invalid: Please enter a valid date.
+      date-invalid-suggestion: Please enter a valid date. Do you want to enter {0}s?
+      date-expected: 请输入执行时间。
+      date-past: 不能指定过去的时间为执行时间。
+      interval-invalid: 请输入合法的时间间隔。
+      interval-too-short: 时间间隔过短。
