@@ -1,0 +1,11 @@
+commands:
+  sudo:
+    description: 在特定上下文中觸發指令
+    options:
+      user: 使用用戶私聊上下文
+      member: 使用當前頻道成員上下文
+      channel: 指定目標頻道上下文
+    messages:
+      expect-command: 請輸入要觸發的指令。
+      expect-context: 請提供新的上下文。
+      invalid-private-member: 無法在私聊上下文使用 --member 選項。
