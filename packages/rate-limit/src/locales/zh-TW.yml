@@ -14,6 +14,7 @@ commands:
       present: 今日 {0} 功能的調用次數為：{1}
       list: 今日各功能的調用次數為：
       none: 今日沒有調用過消耗次數的功能。
+      updated: 设置成功。
   timer:
     description: 定時器訊息
     options:
@@ -25,3 +26,4 @@ commands:
       list: 各定時器的生效時間為：
       item: '{0}：剩餘 <i18n:time value={1}/>'
       none: 當前沒有生效的定時器。
+      updated: 设置成功。
