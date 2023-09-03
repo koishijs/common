@@ -26,7 +26,9 @@ const fork = app.plugin(forward, {
 })
 
 const send = app.bots[0].sendMessage = jest.fn(async () => ['2000'])
-app.bots[0].getGuildMemberList = jest.fn(async () => [{ userId: '321', nickname: 'foo' }])
+app.bots[0].getGuildMemberList = jest.fn(async () => ({
+  data: [{ userId: '321', nickname: 'foo' }]
+}))
 
 before(() => app.start())
 after(() => app.stop())

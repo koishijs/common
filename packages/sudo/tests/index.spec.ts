@@ -47,3 +47,31 @@ describe('koishi-plugin-sudo', () => {
     await client2.shouldReply('sudo -Cu @456 show-context', '456,2,undefined')
   })
 })
+
+describe('koishi-plugin-(sudo & rate-limit)', () => {
+  const app = new App()
+
+  app.plugin(memory)
+  app.plugin(mock)
+  app.plugin(sudo)
+  app.plugin(rate)
+
+  app.command('foo', { maxUsage: 3, authority: 2 }).action(() => 'bar')
+
+  const client = app.mock.client('123')
+
+  before(async () => {
+    await app.start()
+    await app.mock.initUser('123', 4)
+    await app.mock.initUser('456', 1)
+  })
+
+  it('modify user data', async () => {
+    await client.shouldReply('sudo -u @456 usage foo', '今日 foo 功能的调用次数为：0')
+    await client.shouldReply('sudo -u @456 foo', 'bar')
+    await client.shouldReply('sudo -u @456 usage foo', '今日 foo 功能的调用次数为：1')
+    await client.shouldReply('sudo -u @456 usage foo -s 3', '设置成功。')
+    await client.shouldReply('sudo -u @456 usage foo', '今日 foo 功能的调用次数为：3')
+    await client.shouldReply('sudo -u @456 foo', '调用次数已达上限。')
+  })
+})

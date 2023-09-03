@@ -2,14 +2,12 @@ import { App, Time } from 'koishi'
 import mock from '@koishijs/plugin-mock'
 import memory from '@koishijs/plugin-database-memory'
 import { install } from '@sinonjs/fake-timers'
-import * as admin from '@koishijs/plugin-admin'
 import * as help from '@koishijs/plugin-help'
 import * as rate from '../src'
 
 const app = new App()
 let now = Date.now()
 
-app.plugin(admin)
 app.plugin(help)
 app.plugin(mock)
 app.plugin(memory)
@@ -59,14 +57,14 @@ describe('@koishijs/plugin-rate-limit', () => {
 
     it('Modify Usages', async () => {
       await client1.shouldReply('usage', '今日各功能的调用次数为：\nfoo：3')
-      await client1.shouldReply('usage -c foo', '用户数据已修改。')
+      await client1.shouldReply('usage -c foo', '设置成功。')
       await client1.shouldReply('usage', '今日没有调用过消耗次数的功能。')
       await client1.shouldReply('usage -s bar', '缺少参数，输入帮助以查看用法。')
       await client1.shouldReply('usage -s bar nan', '参数 value 输入无效，请提供一个正整数。')
-      await client1.shouldReply('usage -s bar 2', '用户数据已修改。')
+      await client1.shouldReply('usage -s bar 2', '设置成功。')
       await client1.shouldReply('usage bar', '今日 bar 功能的调用次数为：2')
       await client1.shouldReply('usage baz', '今日 baz 功能的调用次数为：0')
-      await client1.shouldReply('usage -c', '用户数据已修改。')
+      await client1.shouldReply('usage -c', '设置成功。')
       await client1.shouldReply('usage', '今日没有调用过消耗次数的功能。')
     })
   })
@@ -109,14 +107,14 @@ describe('@koishijs/plugin-rate-limit', () => {
       const clock = install({ now })
       try {
         await client1.shouldReply('timer', '各定时器的生效时间为：\nbar：剩余 3 分钟')
-        await client1.shouldReply('timer -c bar', '用户数据已修改。')
+        await client1.shouldReply('timer -c bar', '设置成功。')
         await client1.shouldReply('timer', '当前没有生效的定时器。')
         await client1.shouldReply('timer -s foo', '缺少参数，输入帮助以查看用法。')
         await client1.shouldReply('timer -s foo nan', '参数 value 输入无效，请输入合法的时间。')
-        await client1.shouldReply('timer -s foo 2min', '用户数据已修改。')
+        await client1.shouldReply('timer -s foo 2min', '设置成功。')
         await client1.shouldReply('timer foo', '定时器 foo 的生效时间为：剩余 2 分钟')
         await client1.shouldReply('timer fox', '定时器 fox 当前并未生效。')
-        await client1.shouldReply('timer -c', '用户数据已修改。')
+        await client1.shouldReply('timer -c', '设置成功。')
         await client1.shouldReply('timer', '当前没有生效的定时器。')
       } finally {
         clock.uninstall()

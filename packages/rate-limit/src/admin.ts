@@ -1,10 +1,9 @@
 import { Context } from 'koishi'
-import {} from '@koishijs/plugin-admin'
 
 export const name = 'usage-admin'
 
 export function apply(ctx: Context) {
-  ctx.command('usage [key] [value:posint]', { authority: 1, admin: { user: true } })
+  ctx.command('usage [key] [value:posint]')
     .userFields(['usage'])
     .option('set', '-s', { authority: 4 })
     .option('clear', '-c', { authority: 4 })
@@ -12,13 +11,13 @@ export function apply(ctx: Context) {
       const { user } = session
       if (options.clear) {
         name ? delete user.usage[name] : user.usage = {}
-        return
+        return session.text('.updated')
       }
 
       if (options.set) {
         if (!count) return session.text('internal.insufficient-arguments')
         user.usage[name] = count
-        return
+        return session.text('.updated')
       }
 
       if (name) return session.text('.present', [name, user.usage[name] || 0])
@@ -32,7 +31,7 @@ export function apply(ctx: Context) {
       return output.join('\n')
     })
 
-  ctx.command('timer [key] [value:date]', { authority: 1, admin: { user: true } })
+  ctx.command('timer [key] [value:date]')
     .userFields(['timers'])
     .option('set', '-s', { authority: 4 })
     .option('clear', '-c', { authority: 4 })
@@ -40,13 +39,13 @@ export function apply(ctx: Context) {
       const { user } = session
       if (options.clear) {
         name ? delete user.timers[name] : user.timers = {}
-        return
+        return session.text('.updated')
       }
 
       if (options.set) {
         if (!value) return session.text('internal.insufficient-arguments')
         user.timers[name] = +value
-        return
+        return session.text('.updated')
       }
 
       const now = Date.now()
