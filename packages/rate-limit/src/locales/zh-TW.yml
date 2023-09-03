@@ -1,0 +1,27 @@
+internal:
+  usage-exhausted: 調用次數已達上限。
+  too-frequent: 調用過於頻繁，請稍後再試。
+  option-not-usage: ' (不計入調用)'
+  command-max-usage: 已調用次數：{0}/{1}。
+  command-min-interval: 距離下次調用還需：{0}/{1} 秒。
+commands:
+  usage:
+    description: 調用次數訊息
+    options:
+      set: 設定調用次數
+      clear: 清空調用次數
+    messages:
+      present: 今日 {0} 功能的調用次數為：{1}
+      list: 今日各功能的調用次數為：
+      none: 今日沒有調用過消耗次數的功能。
+  timer:
+    description: 定時器訊息
+    options:
+      set: 設定定時器
+      clear: 清空定時器
+    messages:
+      present: 定時器 {0} 的生效時間為：剩餘 <i18n:time value={1}/>
+      absent: 定時器 {0} 當前並未生效。
+      list: 各定時器的生效時間為：
+      item: '{0}：剩餘 <i18n:time value={1}/>'
+      none: 當前沒有生效的定時器。
