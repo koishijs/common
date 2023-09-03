@@ -2,10 +2,10 @@ commands:
   sudo:
     description: 在特定上下文中触发指令
     options:
-      user: 使用用户私聊上下文
-      member: 使用当前频道成员上下文
-      channel: 指定目标频道上下文
+      user: 切换用户身份
+      channel: 切换触发频道
+      direct: 模拟私聊触发
     messages:
       expect-command: 请输入要触发的指令。
       expect-context: 请提供新的上下文。
-      invalid-private-member: 无法在私聊上下文使用 --member 选项。
+      direct-channel: '--channel 和 --direct 无法同时使用。'
