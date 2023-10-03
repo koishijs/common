@@ -22,8 +22,8 @@ commands:
       delete: 設定されたスケジュールを削除する
     messages:
       context: '、コンテキスト：{0}'
-      context.private: ダイレクトメッセージ {userId}
-      context.guild: チャンネル {channelId}
+      context.private: 私聊 {user.id}
+      context.guild: 频道 {channel.id}
       delete-success: スケジュール {0} は削除されました。
       create-success: スケジュールが作成され、番号は {0} です。
       list-empty: 実行待ちのスケジュールはありません。
