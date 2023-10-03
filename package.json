@@ -48,7 +48,7 @@
     "yakumo-publish": "^0.3.3",
     "yakumo-publish-sync": "^0.3.3",
     "yakumo-tsc": "^0.3.7",
-    "yakumo-upgrade": "^0.3.2",
+    "yakumo-upgrade": "^0.3.4",
     "yakumo-version": "^0.3.2",
     "yml-register": "^1.1.0",
     "vitepress": "1.0.0-rc.4"
