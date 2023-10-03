@@ -3,7 +3,8 @@ import { install, InstalledClock } from '@sinonjs/fake-timers'
 import * as schedule from '../src'
 import memory from '@koishijs/plugin-database-memory'
 import mock from '@koishijs/plugin-mock'
-import { use } from 'chai'
+import * as jest from 'jest-mock'
+import { expect, use } from 'chai'
 import shape from 'chai-shape'
 
 use(shape)
@@ -17,6 +18,8 @@ describe('koishi-plugin-schedule', () => {
 
   app.plugin(memory)
   app.command('echo [content:text]').action((_, text) => text)
+
+  const send = app.bots[0].sendMessage = jest.fn(async () => [])
 
   let clock: InstalledClock
 
@@ -35,7 +38,7 @@ describe('koishi-plugin-schedule', () => {
       lastCall: 'timestamp',
       interval: 'integer',
       command: 'text',
-      session: 'json',
+      event: 'json',
     }, {
       autoInc: true,
     })
@@ -45,7 +48,7 @@ describe('koishi-plugin-schedule', () => {
       assignee: app.bots[0].sid,
       interval: Time.day,
       command: 'echo bar',
-      session: client2.meta,
+      event: client2.event,
     })
 
     app.plugin(schedule)
@@ -67,8 +70,7 @@ describe('koishi-plugin-schedule', () => {
       '2. 2000-01-01 01:01:00：echo foo，上下文：频道 456',
     ].join('\n'))
 
-    clock.tick(Time.minute) // 01:01
-    await new Promise(process.nextTick)
+    await clock.tickAsync(Time.minute) // 01:01
     await client1.shouldReply('', 'foo')
     await client1.shouldReply('schedule -l', '当前没有等待执行的日程。')
   })
@@ -76,32 +78,28 @@ describe('koishi-plugin-schedule', () => {
   it('interval schedule', async () => {
     await client1.shouldReply('schedule 00:30 / 1h -- echo foo', '日程已创建，编号为 3。')
 
-    clock.tick(Time.minute * 20) // 01:21
-    await new Promise(process.nextTick)
+    await clock.tickAsync(Time.minute * 20) // 01:21
     await client1.shouldNotReply('')
 
-    clock.tick(Time.minute * 10) // 01:31
-    await new Promise(process.nextTick)
+    await clock.tickAsync(Time.minute * 10) // 01:31
     await client1.shouldReply('', 'foo')
 
-    clock.tick(Time.hour / 2) // 02:01
-    await new Promise(process.nextTick)
+    await clock.tickAsync(Time.hour / 2) // 02:01
     await client1.shouldNotReply('')
 
-    clock.tick(Time.hour / 2) // 02:31
-    await new Promise(process.nextTick)
+    await clock.tickAsync(Time.hour / 2) // 02:31
     await client1.shouldReply('', 'foo')
 
     await client1.shouldReply('schedule -l', '3. 每隔 1 小时 (剩余 59 分钟)：echo foo')
     await client1.shouldReply('schedule -d 3', '日程 3 已删除。')
-    clock.tick(Time.hour) // 02:31
-    await new Promise(process.nextTick)
+    await clock.tickAsync(Time.hour) // 02:31
     await client1.shouldNotReply('')
   })
 
   it('database integration', async () => {
-    clock.tick(Time.day) // 02:31
-    await client2.shouldReply('', 'bar')
+    await clock.tickAsync(Time.day) // 02:31
+    expect(send.mock.calls).to.have.length(1)
+    expect(send.mock.calls[0]).to.shape([client2.event.channel?.id, 'bar'])
   })
 
   it('check arguments', async () => {

@@ -53,8 +53,8 @@ export function apply(ctx: Context, config: Config) {
   const relayMap: Dict<Rule> = {}
 
   async function sendRelay(session: Session<never, 'forward'>, rule: Partial<Rule>) {
-    const { author, parsed } = session
-    let { content } = parsed
+    const { author, stripped } = session
+    let { content } = stripped
     if (!content) return
 
     try {
@@ -71,7 +71,7 @@ export function apply(ctx: Context, config: Config) {
       const bot = ctx.bots[`${platform}:${rule.selfId}`]
 
       // replace all mentions (koishijs/koishi#506)
-      if (segment.select(parsed.content, 'at').length) {
+      if (segment.select(stripped.content, 'at').length) {
         const dict = await session.bot.getGuildMemberMap(session.guildId)
         content = segment.transform(content, {
           at(attrs) {
@@ -81,7 +81,7 @@ export function apply(ctx: Context, config: Config) {
         })
       }
 
-      content = `${author.nickname || author.username}: ${content}`
+      content = `${author.name}: ${content}`
       await bot.sendMessage(channelId, content, rule.guildId).then((ids) => {
         for (const id of ids) {
           relayMap[id] = {
@@ -101,7 +101,7 @@ export function apply(ctx: Context, config: Config) {
   ctx.middleware(async (session: Session<never, 'forward'>, next) => {
     const { quote = {}, isDirect } = session
     if (isDirect) return
-    const data = relayMap[quote.messageId]
+    const data = relayMap[quote.id]
     if (data) return sendRelay(session, data)
 
     const tasks: Promise<void>[] = []
@@ -146,7 +146,7 @@ export function apply(ctx: Context, config: Config) {
 
   function commands(ctx: Context) {
     const cmd = ctx
-      .command('forward [operation:string] <channel:channel>', { authority: 3 })
+      .command('forward', { authority: 3 })
       .alias('fwd')
 
     const register = (def: string, callback: Command.Action<never, 'forward', [string]>) => cmd

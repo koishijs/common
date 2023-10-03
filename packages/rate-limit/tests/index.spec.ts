@@ -24,7 +24,7 @@ before(async () => {
   })
 })
 
-describe('@koishijs/plugin-rate-limit', () => {
+describe('koishi-plugin-rate-limit', () => {
   describe('maxUsage', () => {
     const cmd = app
       .command('foo', '指令1', { maxUsage: 3 })

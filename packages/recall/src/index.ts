@@ -27,9 +27,9 @@ export function apply(ctx: Context, { timeout }: Config) {
     .action(async ({ session }, count = 1) => {
       const list = recent[session.channelId]
       if (session.quote) {
-        const index = list?.findIndex(id => id === session.quote.messageId)
+        const index = list?.findIndex(id => id === session.quote.id)
         if (index) list.splice(index, 1)
-        await deleteMessage(session.bot, session.channelId, session.quote.messageId)
+        await deleteMessage(session.bot, session.channelId, session.quote.id)
         return
       }
       if (!list) return session.text('.no-recent')

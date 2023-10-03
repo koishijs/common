@@ -53,10 +53,10 @@ export function apply(ctx: Context, { operators = [], replyTimeout = Time.day }:
     })
 
   ctx.middleware(async (session, next) => {
-    const { quote, parsed } = session
-    if (!parsed.content || !quote) return next()
-    const data = feedbacks[quote.messageId]
+    const { quote, stripped } = session
+    if (!stripped.content || !quote) return next()
+    const data = feedbacks[quote.id]
     if (!data) return next()
-    await ctx.bots[data[0]].sendMessage(data[1], parsed.content, data[2])
+    await ctx.bots[data[0]].sendMessage(data[1], stripped.content, data[2])
   })
 }

@@ -1,4 +1,4 @@
-import { Computed, Context, Dict, Logger, Schema, Session, Time } from 'koishi'
+import { Computed, Context, Dict, Logger, Schema, Session, Time, Universal } from 'koishi'
 
 declare module 'koishi' {
   interface Tables {
@@ -13,7 +13,7 @@ export interface Schedule {
   lastCall: Date
   interval: number
   command: string
-  session: Session.Payload
+  event: Universal.Event
 }
 
 const logger = new Logger('schedule')
@@ -62,7 +62,7 @@ export function apply(ctx: Context, { minInterval }: Config) {
     lastCall: 'timestamp',
     interval: 'integer',
     command: 'text',
-    session: 'json',
+    event: 'json',
   }, {
     autoInc: true,
   })
@@ -78,7 +78,11 @@ export function apply(ctx: Context, { minInterval }: Config) {
 
     async function executeSchedule() {
       logger.debug('execute %d: %c', id, command)
-      await session.execute(command)
+      try {
+        await session.execute(command)
+      } catch (error) {
+        logger.warn(error)
+      }
       if (!lastCall || !interval) return
       lastCall = new Date()
       await ctx.database.set('schedule', id, { lastCall })
@@ -105,7 +109,7 @@ export function apply(ctx: Context, { minInterval }: Config) {
       executeSchedule()
     }
 
-    ctx.setTimeout(async () => {
+    return ctx.setTimeout(async () => {
       if (!await hasSchedule(id)) return
       const dispose = ctx.setInterval(async () => {
         if (!await hasSchedule(id)) return dispose()
@@ -120,22 +124,24 @@ export function apply(ctx: Context, { minInterval }: Config) {
     const schedules: Dict<Schedule[]> = {}
 
     data.forEach((schedule) => {
-      const { session, assignee } = schedule
+      const { event, assignee } = schedule
+      // ignore incompatible data
+      if (!event) return
       const bot = ctx.bots[assignee]
       if (bot) {
-        prepareSchedule(schedule, new Session(bot, session))
+        prepareSchedule(schedule, bot.session(event))
       } else {
         (schedules[assignee] ||= []).push(schedule)
       }
     })
 
     ctx.on('bot-status-updated', (bot) => {
-      if (bot.status !== 'online') return
+      if (bot.status !== Universal.Status.ONLINE) return
       const items = schedules[bot.sid]
       if (!items) return
       delete schedules[bot.sid]
       items.forEach((schedule) => {
-        prepareSchedule(schedule, new Session(bot, schedule.session))
+        prepareSchedule(schedule, bot.session(schedule.event))
       })
     })
   })
@@ -146,7 +152,7 @@ export function apply(ctx: Context, { minInterval }: Config) {
     .option('list', '-l')
     .option('ensure', '-e')
     .option('full', '-f', { authority: 4 })
-    .option('delete', '-d <id>')
+    .option('delete', '-d <id:number>')
     .action(async ({ session, options }, ...dateSegments) => {
       if (options.delete) {
         await ctx.database.remove('schedule', [options.delete])
@@ -155,16 +161,18 @@ export function apply(ctx: Context, { minInterval }: Config) {
 
       if (options.list) {
         let schedules = await ctx.database.get('schedule', { assignee: [session.sid] })
+        // ignore incompatible data
+        schedules = schedules.filter(s => s.event)
         if (!options.full) {
-          schedules = schedules.filter(s => session.channelId === s.session.channelId)
+          schedules = schedules.filter(s => session.channelId === s.event.channel.id)
         }
         if (!schedules.length) return session.text('.list-empty')
-        return schedules.map(({ id, time, interval, command, session: payload }) => {
+        return schedules.map(({ id, time, interval, command, event }) => {
           let output = `${id}. ${formatInterval(time, interval, session)}：${command}`
           if (options.full) {
-            output += session.text('.context', [payload.isDirect
-              ? session.text('.context.private', payload)
-              : session.text('.context.guild', payload)])
+            output += session.text('.context', [event.channel.type === Universal.Channel.Type.DIRECT
+              ? session.text('.context.private', event)
+              : session.text('.context.guild', event)])
           }
           return output
         }).join('\n')
@@ -201,7 +209,7 @@ export function apply(ctx: Context, { minInterval }: Config) {
         assignee: session.sid,
         interval,
         command: options.rest,
-        session: JSON.parse(JSON.stringify(session)),
+        event: session.event,
       })
       prepareSchedule(schedule, session)
       return session.text('.create-success', [schedule.id])

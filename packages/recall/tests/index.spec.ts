@@ -21,17 +21,27 @@ describe('koishi-plugin-recall', () => {
   it('basic support', async () => {
     const del = app.bots[0].deleteMessage = jest.fn(async () => {})
     await client.shouldReply('recall', '近期没有发送消息。')
-    const session = app.bots[0].session({ messageId: '1234', channelId: '456', guildId: '456', type: 'send' })
-    app.mock.receive(session)
+    app.mock.receive({
+      type: 'send',
+      message: { id: '1234' },
+      channel: { id: '456', type: 0 },
+      guild: { id: '456' },
+      user: { id: '123' },
+    })
     await client.shouldNotReply('recall')
-    expect(del.mock.calls).to.have.shape([[client.meta.channelId, '1234']])
+    expect(del.mock.calls).to.have.shape([[client.event.channel?.id, '1234']])
   })
 
   it('reply', async () => {
     const del = app.bots[0].deleteMessage = jest.fn(async () => {})
-    const session = app.bots[0].session({ messageId: '114', channelId: '514', guildId: '1919', type: 'message' })
-    app.mock.receive(session)
+    app.mock.receive({
+      type: 'send',
+      message: { id: '114' },
+      channel: { id: '514', type: 0 },
+      guild: { id: '1919' },
+      user: { id: '123' },
+    })
     await client.shouldNotReply('<quote id="114"/>recall')
-    expect(del.mock.calls).to.have.shape([[client.meta.channelId, '114']])
+    expect(del.mock.calls).to.have.shape([[client.event.channel?.id, '114']])
   })
 })

@@ -21,8 +21,8 @@ export function apply(ctx: Context) {
     .option('user', '-u [id:user]')
     .option('channel', '-c [id:channel]')
     .option('direct', '-C, -d')
-    .action(async ({ session, options }, message) => {
-      if (!message) return session.text('.expect-command')
+    .action(async ({ session, options }, content) => {
+      if (!content) return session.text('.expect-command')
 
       if (options.channel && options.direct) {
         return session.text('.direct-channel')
@@ -33,7 +33,7 @@ export function apply(ctx: Context) {
       }
 
       // create new session
-      const sess = new Session(session.bot, session)
+      const sess = new Session(session.bot, session.event)
       sess[Session.shadow] = session
 
       // patch channel
@@ -43,14 +43,14 @@ export function apply(ctx: Context) {
       } else if (options.channel && options.channel !== session.cid) {
         sess.channelId = parsePlatform(options.channel)[1]
         sess.subtype = 'group'
-        await sess.observeChannel()
+        await sess.observeChannel([])
       } else {
         sess.channel = session.channel
       }
 
       // patch user
       if (options.user && options.user !== session.uid) {
-        sess.userId = sess.author.userId = parsePlatform(options.user)[1]
+        sess.userId = parsePlatform(options.user)[1]
         const user = await sess.observeUser(['authority'])
         if (session.user.authority <= user.authority) {
           return session.text('internal.low-authority')
@@ -64,10 +64,12 @@ export function apply(ctx: Context) {
         }
       } else {
         sess.user = session.user
-        sess.author = session.author
+        sess.event = session.event
       }
 
-      await sess.execute(message)
+      // respect mock send
+      sess.send = session.send
+      await sess.execute(content)
       await Promise.all([
         sess.user?.$update(),
         sess.channel?.$update(),

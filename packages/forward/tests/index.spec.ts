@@ -27,7 +27,7 @@ const fork = app.plugin(forward, {
 
 const send = app.bots[0].sendMessage = jest.fn(async () => ['2000'])
 app.bots[0].getGuildMemberList = jest.fn(async () => ({
-  data: [{ userId: '321', nickname: 'foo' }]
+  data: [{ user: { id: '321', name: 'foo' } }],
 }))
 
 before(() => app.start())
@@ -56,7 +56,7 @@ describe('koishi-plugin-forward', () => {
 
   it('command usage', async () => {
     app.plugin(memory)
-    fork.update({ storage: 'database' })
+    fork.update({ mode: 'database' })
     await app.lifecycle.flush()
     await app.mock.initUser('123', 3)
     await app.mock.initChannel('456')
