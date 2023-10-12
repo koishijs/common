@@ -3,8 +3,11 @@ import { Context, Dict, Schema, sleep, Time } from 'koishi'
 function parsePlatform(target: string) {
   const index = target.indexOf(':')
   const platform = target.slice(0, index)
-  const id = target.slice(index + 1)
-  return [platform, id]
+
+  const lastIndex = target.lastIndexOf(":")
+  const selfId = target.slice(index + 1, lastIndex)
+  const channelId = target.slice(lastIndex + 1)
+  return [platform, selfId, channelId]
 }
 
 export interface Config {
@@ -38,9 +41,9 @@ export function apply(ctx: Context, { operators = [], replyTimeout = Time.day }:
       const data: FeedbackData = [session.sid, session.channelId, session.guildId]
       for (let index = 0; index < operators.length; ++index) {
         if (index && delay) await sleep(delay)
-        const [platform, userId] = parsePlatform(operators[index])
-        const bot = ctx.bots.find(bot => bot.platform === platform)
-        await bot.sendPrivateMessage(userId, message).then((ids) => {
+        const [platform, selfId, channelId] = parsePlatform(operators[index])
+        const bot = ctx.bots.find(bot => bot.platform === platform && bot.selfId === selfId)
+        await bot.sendMessage(channelId, message).then((ids) => {
           for (const id of ids) {
             feedbacks[id] = data
             ctx.setTimeout(() => delete feedbacks[id], replyTimeout)
