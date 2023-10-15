@@ -9,9 +9,10 @@ feedback 指令用于向开发者反馈信息：
 ```yaml title=koishi.yml
 plugins:
   feedback:
-    operators:
-      # 填写接收者的账号，格式为 {platform}:{userId}
-      - onebot:123456789
+    receivers:
+      - platform: onebot
+        selfId: '123456789'
+        channelId: '987654321'
 ```
 
 这样，当有人调用 feedback 指令时，传入的 message 就会自动被私聊发送给你。你也可以直接回复收到的反馈信息，机器人会把这些消息重新发回到调用 feedback 指令的上下文。这里的用法类似于 [消息转发](https://forward.koishi.chat)。
@@ -32,9 +33,9 @@ plugins:
 
 ## 配置项
 
-### operators
+### receivers
 
-- 类型：`string[]`
+- 类型：`Receiver[]`
 - 默认值：`[]`
 
-接收反馈信息的管理员，格式为 `{platform}:{userId}`。
+反馈接收列表。
