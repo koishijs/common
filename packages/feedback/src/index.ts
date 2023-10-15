@@ -1,27 +1,32 @@
 import { Context, Dict, Schema, sleep, Time } from 'koishi'
 
-function parsePlatform(target: string) {
-  const index = target.indexOf(':')
-  const platform = target.slice(0, index)
-  const id = target.slice(index + 1)
-  return [platform, id]
+interface Receiver {
+  platform: string
+  selfId: string
+  channelId: string
+  guildId?: string
 }
 
+const Receiver: Schema<Receiver> = Schema.object({
+  platform: Schema.string().required().description('平台名称。'),
+  selfId: Schema.string().required().description('机器人 ID。'),
+  channelId: Schema.string().required().description('频道 ID。'),
+  guildId: Schema.string().description('群组 ID。'),
+})
+
 export interface Config {
-  operators?: string[]
+  receivers?: Receiver[]
   replyTimeout?: number
 }
 
-export const schema: Schema<string[] | Config, Config> = Schema.union([
-  Schema.object({
-    operators: Schema.array(String).description('接收反馈信息的管理员。'),
-  }),
-  Schema.transform(Schema.array(String), (operators) => ({ operators })),
-])
+export const Config: Schema<Config> = Schema.object({
+  receivers: Schema.array(Receiver).role('table').description('反馈接收列表。'),
+  replyTimeout: Schema.number().default(Time.day).description('反馈回复时限。'),
+})
 
 export const name = 'feedback'
 
-export function apply(ctx: Context, { operators = [], replyTimeout = Time.day }: Config) {
+export function apply(ctx: Context, { receivers, replyTimeout }: Config) {
   ctx.i18n.define('zh-CN', require('./locales/zh-CN'))
 
   type FeedbackData = [sid: string, channelId: string, guildId: string]
@@ -36,11 +41,11 @@ export function apply(ctx: Context, { operators = [], replyTimeout = Time.day }:
       const message = session.text('.receive', [nickname, text])
       const delay = ctx.root.config.delay.broadcast
       const data: FeedbackData = [session.sid, session.channelId, session.guildId]
-      for (let index = 0; index < operators.length; ++index) {
+      for (let index = 0; index < receivers.length; ++index) {
         if (index && delay) await sleep(delay)
-        const [platform, userId] = parsePlatform(operators[index])
-        const bot = ctx.bots.find(bot => bot.platform === platform)
-        await bot.sendPrivateMessage(userId, message).then((ids) => {
+        const { platform, selfId, channelId, guildId } = receivers[index]
+        const bot = ctx.bots.find(bot => bot.platform === platform && bot.selfId === selfId)
+        await bot.sendMessage(channelId, message, guildId).then((ids) => {
           for (const id of ids) {
             feedbacks[id] = data
             ctx.setTimeout(() => delete feedbacks[id], replyTimeout)
