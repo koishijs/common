@@ -1,5 +1,5 @@
 import { expect, use } from 'chai'
-import { App, sleep, Session } from 'koishi'
+import { App, sleep, Universal } from 'koishi'
 import shape from 'chai-shape'
 import mock, { DEFAULT_SELF_ID } from '@koishijs/plugin-mock'
 import * as jest from 'jest-mock'
@@ -18,8 +18,8 @@ async function setup(options: verifier.Config) {
   return { app, handleFriendRequest, handleGuildRequest, handleGuildMemberRequest }
 }
 
-function receive(app: App, session: Partial<Session>) {
-  app.mock.receive(session)
+function receive(app: App, event: Partial<Universal.Event>) {
+  app.mock.receive(event)
   return sleep(0)
 }
 
@@ -27,26 +27,26 @@ const receiveFriendRequest = (app: App, userId: string) => receive(app, {
   platform: 'mock',
   selfId: DEFAULT_SELF_ID,
   type: 'friend-request',
-  messageId: 'flag',
-  userId,
+  message: { id: 'flag' },
+  user: { id: userId },
 })
 
 const receiveGroupRequest = (app: App, userId: string) => receive(app, {
   platform: 'mock',
   selfId: DEFAULT_SELF_ID,
   type: 'guild-request',
-  guildId: '10000',
-  messageId: 'flag',
-  userId,
+  guild: { id: '10000' },
+  message: { id: 'flag' },
+  user: { id: userId },
 })
 
 const receiveGroupMemberRequest = (app: App, userId: string) => receive(app, {
   platform: 'mock',
   selfId: DEFAULT_SELF_ID,
   type: 'guild-member-request',
-  guildId: '10000',
-  messageId: 'flag',
-  userId,
+  guild: { id: '10000' },
+  message: { id: 'flag' },
+  user: { id: userId },
 })
 
 describe('koishi-plugin-verifier', () => {
