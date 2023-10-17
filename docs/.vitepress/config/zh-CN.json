@@ -15,6 +15,10 @@
         "text": "插件",
         "items": [
           {
+            "text": "别名指令 (Alias)",
+            "link": "/plugins/alias.md"
+          },
+          {
             "text": "发送反馈 (Feedback)",
             "link": "/plugins/feedback.md"
           },
