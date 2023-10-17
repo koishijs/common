@@ -6,6 +6,7 @@
 
 ## plugin
 
+- [别名指令 (Alias)](./plugins/alias.md)
 - [发送反馈 (Feedback)](./plugins/feedback.md)
 - [消息转发 (Forward)](./plugins/forward.md)
 - [速率限制 (Rate Limit)](./plugins/rate-limit.md)
