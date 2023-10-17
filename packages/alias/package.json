@@ -1,0 +1,46 @@
+{
+  "name": "koishi-plugin-alias",
+  "version": "1.0.0",
+  "description": "alias(1) for Koishi",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "contributors": [
+    "Shigma <shigma10826@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://common.koishi.chat/plugins/alias.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koishijs/common.git",
+    "directory": "packages/alias"
+  },
+  "bugs": {
+    "url": "https://github.com/koishijs/common/issues"
+  },
+  "keywords": [
+    "bot",
+    "chatbot",
+    "koishi",
+    "plugin",
+    "issue",
+    "alias"
+  ],
+  "koishi": {
+    "browser": true,
+    "description": {
+      "en": "alias(1) for Koishi",
+      "zh": "适用于 Koishi 的 alias(1)。创建和管理指令别名。"
+    }
+  },
+  "devDependencies": {
+    "@koishijs/plugin-help": "^2.3.3",
+    "@koishijs/plugin-mock": "^2.6.0",
+    "koishi": "^4.15.1"
+  },
+  "peerDependencies": {
+    "koishi": "^4.15.1"
+  }
+}
