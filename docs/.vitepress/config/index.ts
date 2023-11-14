@@ -5,12 +5,6 @@ const isDev = process.env.NODE_ENV === 'development' || process.env.VERCEL_ENV =
 export default defineConfig({
   title: '@koishijs/common',
 
-  head: [
-    ['link', { rel: 'icon', href: 'https://koishi.chat/logo.png' }],
-    ['link', { rel: 'manifest', href: '/manifest/zh-CN.json' }],
-    ['meta', { name: 'theme-color', content: '#5546a3' }]
-  ],
-
   locales: {
     'zh-CN': require('./zh-CN'),
     ...(isDev ? {

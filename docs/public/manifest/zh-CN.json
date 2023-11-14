@@ -1,6 +1,6 @@
 {
   "name": "@koishijs/common",
-  "short_name": "@koishijs/common",
+  "short_name": "common",
   "description": "常用 Koishi 插件合集",
   "start_url": "/zh-CN/",
   "display": "standalone",
