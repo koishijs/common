@@ -10,7 +10,7 @@ export const name = 'alias'
 export function apply(ctx: Context, config: Config) {
   ctx.i18n.define('zh-CN', require('./locales/zh-CN'))
 
-  const aliases: Dict<Command> = {}
+  const aliases: Dict<Command> = Object.create(null)
 
   ctx.command('alias <name:string> <command:text>', { authority: 3, checkArgCount: true })
     .action(async ({ session }, name, command) => {
