@@ -59,7 +59,7 @@ export function apply(ctx: Context) {
       const timer = setTimeout(() => {
         if (!ctx.loader) process.exit(code)
         const content = session.text('.restarted')
-        ctx.envData.message = { isDirect, channelId, guildId, sid, content }
+        ctx.loader.envData.message = { isDirect, channelId, guildId, sid, content }
         ctx.loader.fullReload(code)
       }, parsedTime)
 

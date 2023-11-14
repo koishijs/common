@@ -1,11 +1,12 @@
 {
   "name": "koishi-plugin-schedule",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Create scheduled tasks for Koishi",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "src"
   ],
   "contributors": [
     "Shigma <shigma10826@gmail.com>"
@@ -30,7 +31,7 @@
     "timer"
   ],
   "koishi": {
-    "portable": true,
+    "browser": true,
     "description": {
       "en": "Create scheduled tasks",
       "zh": "创建计划任务，定时执行指令"
@@ -45,12 +46,12 @@
     ]
   },
   "devDependencies": {
-    "@koishijs/plugin-database-memory": "^2.3.5",
-    "@koishijs/plugin-help": "^2.3.2",
-    "@koishijs/plugin-mock": "^2.6.0",
-    "koishi": "^4.15.0"
+    "@koishijs/plugin-database-memory": "^2.4.0",
+    "@koishijs/plugin-help": "^2.3.3",
+    "@koishijs/plugin-mock": "^2.6.4",
+    "koishi": "^4.15.5"
   },
   "peerDependencies": {
-    "koishi": "^4.15.0"
+    "koishi": "^4.15.5"
   }
 }

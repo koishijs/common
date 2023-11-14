@@ -128,7 +128,7 @@ export function apply(ctx: Context, config: Config) {
   })
 
   if (config.mode === 'database') {
-    ctx.using(['database'], commands)
+    ctx.inject(['database'], commands)
   // TODO support config mode
   // } else if (ctx.loader?.writable) {
   //   ctx.plugin(commands)

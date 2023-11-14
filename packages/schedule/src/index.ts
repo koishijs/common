@@ -1,4 +1,4 @@
-import { Computed, Context, Dict, Logger, Schema, Session, Time, Universal } from 'koishi'
+import { Computed, Context, Dict, Schema, Session, Time, Universal } from 'koishi'
 
 declare module 'koishi' {
   interface Tables {
@@ -16,10 +16,8 @@ export interface Schedule {
   event: Universal.Event
 }
 
-const logger = new Logger('schedule')
-
 export const name = 'schedule'
-export const using = ['database'] as const
+export const inject = ['database']
 
 export interface Config {
   minInterval?: Computed<number>
@@ -34,6 +32,8 @@ function toHourMinute(time: Date) {
 }
 
 export function apply(ctx: Context, { minInterval }: Config) {
+  const logger = ctx.logger('schedule')
+
   ctx.i18n.define('zh-CN', require('./locales/zh-CN'))
 
   function formatInterval(date: Date, interval: number, session: Session<never, never>) {

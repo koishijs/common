@@ -3,7 +3,7 @@ import { Context, Schema, Session } from 'koishi'
 export interface Config {}
 
 export const name = 'sudo'
-export const using = ['database'] as const
+export const inject = ['database']
 export const Config: Schema<Config> = Schema.object({})
 
 function parsePlatform(target: string) {
@@ -33,7 +33,7 @@ export function apply(ctx: Context) {
       }
 
       // create new session
-      const sess = new Session(session.bot, session.event)
+      const sess = session.bot.session(session.event)
       sess[Session.shadow] = session
 
       // patch channel

@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
-    "dist",
-    "lib"
+    "lib",
+    "src"
   ],
   "author": "Dragon-Fish <dragon-fish@qq.com>",
   "contributors": [
@@ -43,11 +43,11 @@
     }
   },
   "devDependencies": {
-    "@koishijs/plugin-help": "^2.3.2",
-    "@koishijs/plugin-mock": "^2.6.0",
-    "koishi": "^4.15.0"
+    "@koishijs/plugin-help": "^2.3.3",
+    "@koishijs/plugin-mock": "^2.6.4",
+    "koishi": "^4.15.5"
   },
   "peerDependencies": {
-    "koishi": "^4.15.0"
+    "koishi": "^4.15.5"
   }
 }

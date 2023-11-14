@@ -1,12 +1,12 @@
 {
   "name": "koishi-plugin-shutdown",
   "description": "shutdown(8) for Koishi.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
     "lib",
-    "dist"
+    "src"
   ],
   "author": {
     "name": "Il Harper",
@@ -57,9 +57,9 @@
     ]
   },
   "devDependencies": {
-    "koishi": "^4.15.0"
+    "koishi": "^4.15.5"
   },
   "peerDependencies": {
-    "koishi": "^4.15.0"
+    "koishi": "^4.15.5"
   }
 }
