@@ -10,7 +10,7 @@ koishi-plugin-forward 支持在不同的频道之间转发消息。它有两种�
 plugins:
   forward:
     # 请使用 {platform}:{channelId} 的格式
-    - source: onebot:123456789
+    - source: qq:123456789
       target: discord:987654321
       selfId: '33557799'
 ```
