@@ -1,5 +1,28 @@
 {
   "description": "常用 Koishi 插件合集",
+  "head": [
+    [
+      "link",
+      {
+        "rel": "icon",
+        "href": "https://koishi.chat/logo.png"
+      }
+    ],
+    [
+      "link",
+      {
+        "rel": "manifest",
+        "href": "/manifest/en-US.json"
+      }
+    ],
+    [
+      "meta",
+      {
+        "name": "theme-color",
+        "content": "#5546a3"
+      }
+    ]
+  ],
   "themeConfig": {
     "sidebar": [
       {
