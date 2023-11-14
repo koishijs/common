@@ -32,7 +32,7 @@ declare module 'koishi' {
 export interface Config {}
 
 export const name = 'rate-limit'
-export const using = ['database'] as const
+export const inject = ['database']
 export const Config: Schema<Config> = Schema.object({})
 
 export function apply(ctx: Context) {
@@ -93,20 +93,20 @@ export function apply(ctx: Context) {
     }
 
     // check usage
-    if (isUsage) {
-      const name = getUsageName(command)
-      const minInterval = session.resolve(command.config.minInterval)
-      const maxUsage = session.resolve(command.config.maxUsage)
+    if (!isUsage) return
 
-      // interval check should be performed before usage check
-      // https://github.com/koishijs/koishi/issues/752
-      if (minInterval > 0 && checkTimer(name, session.user, minInterval)) {
-        return sendHint('too-frequent')
-      }
+    const name = getUsageName(command)
+    const minInterval = session.resolve(command.config.minInterval)
+    const maxUsage = session.resolve(command.config.maxUsage)
 
-      if (maxUsage < Infinity && checkUsage(name, session.user, maxUsage)) {
-        return sendHint('usage-exhausted')
-      }
+    // interval check should be performed before usage check
+    // https://github.com/koishijs/koishi/issues/752
+    if (minInterval > 0 && checkTimer(name, session.user, minInterval)) {
+      return sendHint('too-frequent')
+    }
+
+    if (maxUsage < Infinity && checkUsage(name, session.user, maxUsage)) {
+      return sendHint('usage-exhausted')
     }
   })
 
@@ -145,7 +145,7 @@ export function apply(ctx: Context) {
 }
 
 export function getUsageName(command: Command) {
-  return command.config.usageName || command.name
+  return command.config.usageName || command.name.replace(/\./g, ':')
 }
 
 export function getUsage(name: string, user: Pick<User, 'usage'>) {
