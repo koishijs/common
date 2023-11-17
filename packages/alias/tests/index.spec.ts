@@ -14,7 +14,7 @@ const client = app.mock.client('123')
 before(() => app.start())
 after(() => app.stop())
 
-describe('koishi-plugin-feedback', () => {
+describe('koishi-plugin-alias', () => {
   it('basic support', async () => {
     await client.shouldReply('alias foo echo 111', '已成功创建别名指令 foo。')
     await client.shouldReply('foo 222', '111 222')
