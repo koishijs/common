@@ -7,6 +7,7 @@
 ## 插件
 
 - [别名指令 (Alias)](https://common.koishi.chat/plugins/alias.html)
+- [@ 指令 (At Command)](https://common.koishi.chat/plugins/at-command.html)
 - [发送反馈 (Feedback)](https://common.koishi.chat/plugins/feedback.html)
 - [消息转发 (Forward)](https://common.koishi.chat/plugins/forward.html)
 - [速率限制 (Rate Limit)](https://common.koishi.chat/plugins/rate-limit.html)
