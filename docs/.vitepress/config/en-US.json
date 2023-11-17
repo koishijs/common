@@ -42,6 +42,10 @@
             "link": "/plugins/alias.md"
           },
           {
+            "text": "@ 指令 (At Command)",
+            "link": "/plugins/at-command.md"
+          },
+          {
             "text": "发送反馈 (Feedback)",
             "link": "/plugins/feedback.md"
           },
