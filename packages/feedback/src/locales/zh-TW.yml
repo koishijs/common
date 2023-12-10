@@ -5,7 +5,7 @@ commands:
       receive.true: 添加到反馈频道列表
       receive.false: 从反馈频道列表移除
     messages:
-      expect-text: 請輸入要傳送的文字。
+      expect-text: 請輸入要發送的文本。
       receive: |-
         收到来自 {0} 的反馈信息：
         {1}
