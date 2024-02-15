@@ -32,7 +32,7 @@ export const name = 'spawn'
 export function apply(ctx: Context, config: Config) {
   ctx.i18n.define('zh-CN', require('./locales/zh-CN'))
 
-  ctx.command('exec <command:text>')
+  ctx.command('exec <command:text>', { authority: 4 })
     .action(async ({ session }, command) => {
       if (!command) return session.text('.expect-text')
 
