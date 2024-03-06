@@ -39,12 +39,12 @@
     ]
   },
   "devDependencies": {
-    "@koishijs/plugin-database-memory": "^2.5.1",
-    "@koishijs/plugin-help": "^2.4.1",
+    "@koishijs/plugin-database-memory": "^3.0.0",
+    "@koishijs/plugin-help": "^2.4.3",
     "@koishijs/plugin-mock": "^2.6.5",
-    "koishi": "^4.16.2"
+    "koishi": "^4.17.2"
   },
   "peerDependencies": {
-    "koishi": "^4.16.2"
+    "koishi": "^4.17.2"
   }
 }

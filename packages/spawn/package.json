@@ -1,6 +1,6 @@
 {
   "name": "koishi-plugin-spawn",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Run shell commands with Koishi",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -43,11 +43,11 @@
     }
   },
   "devDependencies": {
-    "@koishijs/plugin-help": "^2.4.1",
+    "@koishijs/plugin-help": "^2.4.3",
     "@koishijs/plugin-mock": "^2.6.5",
-    "koishi": "^4.16.2"
+    "koishi": "^4.17.2"
   },
   "peerDependencies": {
-    "koishi": "^4.16.2"
+    "koishi": "^4.17.2"
   }
 }

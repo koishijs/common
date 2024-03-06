@@ -1,4 +1,4 @@
-import { defineConfig } from '@koishijs/vitepress'
+import { defineConfig } from '@cordisjs/vitepress'
 
 const isDev = process.env.NODE_ENV === 'development' || process.env.VERCEL_ENV === 'preview'
 
