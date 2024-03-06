@@ -1,0 +1,109 @@
+{
+  "description": "常用 Koishi 插件合集",
+  "head": [
+    [
+      "link",
+      {
+        "rel": "icon",
+        "href": "https://koishi.chat/logo.png"
+      }
+    ],
+    [
+      "link",
+      {
+        "rel": "manifest",
+        "href": "/manifest/ru-RU.json"
+      }
+    ],
+    [
+      "meta",
+      {
+        "name": "theme-color",
+        "content": "#5546a3"
+      }
+    ]
+  ],
+  "themeConfig": {
+    "sidebar": [
+      {
+        "text": "指南",
+        "items": [
+          {
+            "text": "总览",
+            "link": "/index.md"
+          }
+        ]
+      },
+      {
+        "text": "插件",
+        "items": [
+          {
+            "text": "别名指令 (Alias)",
+            "link": "/plugins/alias.md"
+          },
+          {
+            "text": "@ 指令 (At Command)",
+            "link": "/plugins/at-command.md"
+          },
+          {
+            "text": "发送反馈 (Feedback)",
+            "link": "/plugins/feedback.md"
+          },
+          {
+            "text": "消息转发 (Forward)",
+            "link": "/plugins/forward.md"
+          },
+          {
+            "text": "速率限制 (Rate Limit)",
+            "link": "/plugins/rate-limit.md"
+          },
+          {
+            "text": "撤回消息 (Recall)",
+            "link": "/plugins/recall.md"
+          },
+          {
+            "text": "复读机 (Repeater)",
+            "link": "/plugins/repeater.md"
+          },
+          {
+            "text": "自定义回复 (Respondent)",
+            "link": "/plugins/respondent.md"
+          },
+          {
+            "text": "计划任务 (Schedule)",
+            "link": "/plugins/schedule.md"
+          },
+          {
+            "text": "关闭与重启 (Shutdown)",
+            "link": "/plugins/shutdown.md"
+          },
+          {
+            "text": "执行命令 (Spawn)",
+            "link": "/plugins/spawn.md"
+          },
+          {
+            "text": "模拟调用 (Sudo)",
+            "link": "/plugins/sudo.md"
+          },
+          {
+            "text": "处理申请 (Verifier)",
+            "link": "/plugins/verifier.md"
+          }
+        ]
+      },
+      {
+        "text": "更多",
+        "items": [
+          {
+            "text": "Koishi 官网",
+            "link": "https://koishi.chat"
+          },
+          {
+            "text": "支持作者",
+            "link": "https://afdian.net/a/shigma"
+          }
+        ]
+      }
+    ]
+  }
+}

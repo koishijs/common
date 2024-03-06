@@ -7,14 +7,12 @@ commands:
       The time string may either be in the format "hh:mm" for hour/minutes specifying the time to execute the shutdown at, specified in 24h clock format. Alternatively it may be in the syntax "+m" referring to the specified number of minutes m from now.
       "now" is an alias for "+0", i.e. for triggering an immediate shutdown. If no time argument is specified, "+1" is implied.
       Optionally, this may be followed by a wall message to be sent to all logged-in users before going down.
-
     options:
       reboot: Soft reboot.
       rebootHard: Hard reboot.
       wall: Send wall message before power off or reboot.
       clear: Clear all pending shutdowns.
       show: List all pending shutdown actions.
-
     messages:
       no-pending: There's no pending shutdown.
       list-header: 'Pending shutdowns:'
@@ -23,10 +21,9 @@ commands:
         poweroff: 'Power off scheduled at: {0}'
       invalid-time: 'Failed to parse time specification: {0}'
       clear: Cleared all pending shutdowns.
-      reboot: 'Reboot scheduled for {0}, use "shutdown -c" to cancel.'
-      poweroff: 'Power off scheduled for {0}, use "shutdown -c" to cancel.'
-      restarted: 'Koishi has been restarted.'
-
+      reboot: Reboot scheduled for {0}, use "shutdown -c" to cancel.
+      poweroff: Power off scheduled for {0}, use "shutdown -c" to cancel.
+      restarted: Koishi has been restarted.
     wall-messages:
       clear: The system shutdown has been cancelled.
       reboot: The system is going down for reboot at {0}.
