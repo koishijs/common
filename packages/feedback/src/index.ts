@@ -29,6 +29,8 @@ export const name = 'feedback'
 export function apply(ctx: Context, config: Config) {
   ctx.i18n.define('zh-CN', require('./locales/zh-CN'))
 
+  const logger = ctx.logger('feedback')
+
   type FeedbackData = [sid: string, channelId: string, guildId: string]
   const feedbacks: Dict<FeedbackData> = {}
 
@@ -47,9 +49,11 @@ export function apply(ctx: Context, config: Config) {
         if (options.receive) {
           if (index >= 0) return session.text('.not-modified')
           config.receivers.push(pick(session, ['platform', 'selfId', 'channelId', 'guildId']))
+          logger.info(`add receiver ${session.platform}:${session.selfId}:${session.channelId}:${session.guildId}`)
         } else {
           if (index < 0) return session.text('.not-modified')
           config.receivers.splice(index, 1)
+          logger.info(`remove receiver ${session.platform}:${session.selfId}:${session.channelId}:${session.guildId}`)
         }
         ctx.scope.update(config, false)
         return session.text('.updated')
@@ -65,13 +69,17 @@ export function apply(ctx: Context, config: Config) {
         if (index && delay) await sleep(delay)
         const { platform, selfId, channelId, guildId } = config.receivers[index]
         const bot = ctx.bots.find(bot => bot.platform === platform && bot.selfId === selfId)
+        if (!bot) {
+          logger.warn(`cannot find bot (${platform}:${selfId})`)
+          continue
+        }
         await bot.sendMessage(channelId, message, guildId).then((ids) => {
           for (const id of ids) {
             feedbacks[id] = data
             ctx.setTimeout(() => delete feedbacks[id], config.replyTimeout)
           }
         }, (error) => {
-          ctx.logger('bot').warn(error)
+          logger.warn(error)
         })
       }
       return session.text('.success')
