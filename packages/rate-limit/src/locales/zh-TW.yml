@@ -24,6 +24,6 @@ commands:
       present: 定時器 {0} 的生效時間為：剩餘 <i18n:time value={1}/>
       absent: 定時器 {0} 當前並未生效。
       list: 各定時器的生效時間為：
-      item: '{0}：剩餘 <i18n:time value={1}/>'
+      item: '<p>{0}：剩余 <i18n:time value={1}/></p>'
       none: 當前沒有生效的定時器。
       updated: 设置成功。
