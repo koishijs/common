@@ -57,9 +57,10 @@ export function apply(ctx: Context) {
       const output: string[] = []
       for (const name of Object.keys(user.timers).sort()) {
         if (name.startsWith('_')) continue
-        const delta = user.times[name] - now
-        if (delta > 0)
+        const delta = user.timers[name] - now
+        if (delta > 0) {
           output.push(session.text('.item', [name, delta]))
+        }
       }
       if (!output.length) return session.text('.none')
       output.unshift(session.text('.list'))
