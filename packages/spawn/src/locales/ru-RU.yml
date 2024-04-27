@@ -1,0 +1,9 @@
+commands:
+  exec:
+    description: 执行命令
+    messages:
+      expect-input: 请输入要运行的命令。
+      started: '[运行开始] {command}'
+      finished: |-
+        [运行完毕] {command}
+        {output}

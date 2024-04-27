@@ -1,0 +1,23 @@
+commands:
+  forward:
+    description: Настроить переадресации сообщений
+    usage: Текущий канал：{cid}
+  forward.add:
+    description: Добавить целевой канал
+    messages:
+      unchanged: '{0} Это целевой канал текущего.'
+      updated: 'Успешно добавлен целевой канал {0}.'
+  forward.remove:
+    description: Удалить целевой канал
+    messages:
+      unchanged: '{0} Нет целевой канал текущего'
+      updated: 'Успешно удавлен целевой канал {0}.'
+  forward.clear:
+    description: Удалить все целевые каналы
+    messages:
+      updated: 'Успешно удавлен все целевые каналы.'
+  forward.list:
+    description: Просмотреть списка целевых каналов
+    messages:
+      empty: 'Для текущего канала не задан целевой канал.'
+      header: 'Списка целевых каналов текущего：'

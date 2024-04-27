@@ -1,0 +1,23 @@
+commands:
+  forward:
+    description: 設置消息轉發
+    usage: 當前頻道 ID：{cid}
+  forward.add:
+    description: 添加目標頻道
+    messages:
+      unchanged: '{0} 已經是當前頻道的目標頻道。'
+      updated: '已成功添加目標頻道 {0}。'
+  forward.remove:
+    description: 移除目標頻道
+    messages:
+      unchanged: '{0} 不是當前頻道的目標頻道。'
+      updated: '已成功移除目標頻道 {0}。'
+  forward.clear:
+    description: 移除全部目標頻道
+    messages:
+      updated: '已成功移除全部目標頻道。'
+  forward.list:
+    description: 查看目標頻道列表
+    messages:
+      empty: '當前頻道沒有設置目標頻道。'
+      header: '當前頻道的目標頻道列表為：'
