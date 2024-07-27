@@ -23,8 +23,8 @@ export function apply(ctx: Context, { timeout }: Config) {
     ctx.setTimeout(() => remove(list, session.messageId), timeout)
   })
 
-  ctx.command('recall [count:number]', { authority: 2 })
-    .action(async ({ session }, count = 1) => {
+  ctx.command('recall [count]', { authority: 2 })
+    .action(async ({ session }, count: any = 1) => {
       const list = recent[session.channelId]
       if (session.quote) {
         const index = list?.findIndex(id => id === session.quote.id)
