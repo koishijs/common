@@ -29,13 +29,17 @@ declare module 'koishi' {
   }
 }
 
-export interface Config {}
+export interface Config {
+  provideCommand: boolean
+}
 
 export const name = 'rate-limit'
 export const inject = ['database']
-export const Config: Schema<Config> = Schema.object({})
+export const Config: Schema<Config> = Schema.object({
+  provideCommand: Schema.boolean().default(true).description('是否提供 `usage` 和 `timer` 指令。'),
+})
 
-export function apply(ctx: Context) {
+export function apply(ctx: Context, cfg: Config) {
   ctx.i18n.define('zh-CN', zhCN)
 
   ctx.model.extend('user', {
@@ -141,7 +145,7 @@ export function apply(ctx: Context) {
     return output
   })
 
-  ctx.plugin(admin)
+  if (cfg.provideCommand) ctx.plugin(admin)
 }
 
 export function getUsageName(command: Command) {
