@@ -1,0 +1,30 @@
+commands:
+  shutdown:
+    description: 关闭或重启 Koishi
+    usage: |-
+      此指令可用于关闭或重启 Koishi。
+      第一个参数是一个时间字符串 (通常是“now”)。
+      时间字符串用于指定执行关机的时间。可以是“hh:mm”格式的小时/分钟，也可以直接通过“+m”中表示从现在开始指定的分钟数 m。
+      “now”是“+0”的别名，即触发立即关闭。如果未指定时间参数，则默认“+1”。
+      可选地，这之后可能会在关闭之前向所有登录用户发送一条墙消息。
+    options:
+      reboot: 软重启
+      rebootHard: 硬重启
+      wall: 发送提示信息
+      clear: 清除所有计划中的关闭
+      show: 列出计划中的关闭操作
+    messages:
+      no-pending: 没有计划中的关闭
+      list-header: 计划中的关闭：
+      list-item:
+        reboot: 重启计划于：{0}
+        poweroff: 关闭计划于：{0}
+      invalid-time: 无法解析时间：{0}
+      clear: 已清除所有计划中的关闭。
+      reboot: 计划于 {0} 重启，使用“shutdown -c”以取消。
+      poweroff: 计划于 {0} 关闭，使用“shutdown -c”以取消。
+      restarted: 机器人已重新启动。
+    wall-messages:
+      clear: 关闭已经取消。
+      reboot: 系统将在 {0} 重启。
+      poweroff: 系统将在 {0} 关闭。
