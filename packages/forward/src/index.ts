@@ -100,7 +100,7 @@ export function apply(ctx: Context, config: Config) {
 
   ctx.middleware(async (session: Session<never, 'forward'>, next) => {
     const { quote = {}, isDirect } = session
-    if (isDirect) return
+    if (isDirect) return next()
     const data = relayMap[quote.id]
     if (data) return sendRelay(session, data)
 
