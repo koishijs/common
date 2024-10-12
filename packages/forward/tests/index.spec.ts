@@ -1,7 +1,7 @@
 import { App } from 'koishi'
 import { expect, use } from 'chai'
 import shape from 'chai-shape'
-import * as jest from 'jest-mock'
+import { mock as jest } from 'node:test'
 import * as help from '@koishijs/plugin-help'
 import memory from '@koishijs/plugin-database-memory'
 import mock, { DEFAULT_SELF_ID } from '@koishijs/plugin-mock'
@@ -35,23 +35,23 @@ after(() => app.stop())
 
 describe('koishi-plugin-forward', () => {
   it('basic support', async () => {
-    send.mockClear()
+    send.mock.resetCalls()
     await client2.shouldNotReply('hello')
     expect(send.mock.calls).to.have.length(1)
-    expect(send.mock.calls).to.have.shape([['654', '123: hello']])
+    expect(send.mock.calls[0].arguments).to.have.shape(['654', '123: hello'])
 
-    send.mockClear()
+    send.mock.resetCalls()
     await client3.shouldNotReply('hello')
     expect(send.mock.calls).to.have.length(0)
     await client3.shouldNotReply('<quote id="2000"/> hello')
     expect(send.mock.calls).to.have.length(1)
-    expect(send.mock.calls).to.have.shape([['456', '789: hello']])
+    expect(send.mock.calls[0].arguments).to.have.shape(['456', '789: hello'])
 
-    send.mockClear()
-    send.mockImplementation(async () => ['3000'])
+    send.mock.resetCalls()
+    send.mock.mockImplementation(async () => ['3000'])
     await client2.shouldNotReply('<quote id="3000"/> hello')
     expect(send.mock.calls).to.have.length(1)
-    expect(send.mock.calls).to.have.shape([['654', '123: hello']])
+    expect(send.mock.calls[0].arguments).to.have.shape(['654', '123: hello'])
   })
 
   it('command usage', async () => {
@@ -66,10 +66,10 @@ describe('koishi-plugin-forward', () => {
     await client2.shouldReply('forward add #654', '已成功添加目标频道 mock:654。')
     await client2.shouldReply('forward ls', '当前频道的目标频道列表为：\nmock:654')
 
-    send.mockClear()
+    send.mock.resetCalls()
     await client2.shouldNotReply('hello <at id="321"/>')
     expect(send.mock.calls).to.have.length(1)
-    expect(send.mock.calls).to.have.shape([['654', '123: hello @foo']])
+    expect(send.mock.calls[0].arguments).to.have.shape(['654', '123: hello @foo'])
 
     await client2.shouldReply('forward rm #654', '已成功移除目标频道 mock:654。')
     await client2.shouldReply('forward ls', '当前频道没有设置目标频道。')

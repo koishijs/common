@@ -1,7 +1,7 @@
 import { App } from 'koishi'
 import { expect, use } from 'chai'
 import mock from '@koishijs/plugin-mock'
-import * as jest from 'jest-mock'
+import { mock as jest } from 'node:test'
 import * as recall from '../src'
 import shape from 'chai-shape'
 
@@ -29,7 +29,8 @@ describe('koishi-plugin-recall', () => {
       user: { id: '123' },
     })
     await client.shouldNotReply('recall')
-    expect(del.mock.calls).to.have.shape([[client.event.channel?.id, '1234']])
+    expect(del.mock.calls).to.have.length(1)
+    expect(del.mock.calls[0].arguments).to.have.shape([client.event.channel?.id, '1234'])
   })
 
   it('reply', async () => {
@@ -41,7 +42,9 @@ describe('koishi-plugin-recall', () => {
       guild: { id: '1919' },
       user: { id: '123' },
     })
-    await client.shouldNotReply('<quote id="114"/>recall')
-    expect(del.mock.calls).to.have.shape([[client.event.channel?.id, '114']])
+    // https://github.com/koishijs/common/pull/15
+    await client.shouldNotReply('<quote id="114">foo</quote>recall')
+    expect(del.mock.calls).to.have.length(1)
+    expect(del.mock.calls[0].arguments).to.have.shape([client.event.channel?.id, '114'])
   })
 })

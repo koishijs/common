@@ -2,7 +2,7 @@ import { expect, use } from 'chai'
 import { App, sleep, Universal } from 'koishi'
 import shape from 'chai-shape'
 import mock, { DEFAULT_SELF_ID } from '@koishijs/plugin-mock'
-import * as jest from 'jest-mock'
+import { mock as jest } from 'node:test'
 import * as verifier from '../src'
 
 use(shape)
@@ -71,13 +71,16 @@ describe('koishi-plugin-verifier', () => {
     })
 
     await receiveFriendRequest(instance.app, '321')
-    expect(instance.handleFriendRequest.mock.calls).to.have.shape([['flag', true, 'foo']])
+    expect(instance.handleFriendRequest.mock.calls).to.have.length(1)
+    expect(instance.handleFriendRequest.mock.calls[0].arguments).to.have.shape(['flag', true, 'foo'])
 
     await receiveGroupRequest(instance.app, '321')
-    expect(instance.handleGuildRequest.mock.calls).to.have.shape([['flag', false, 'baz']])
+    expect(instance.handleGuildRequest.mock.calls).to.have.length(1)
+    expect(instance.handleGuildRequest.mock.calls[0].arguments).to.have.shape(['flag', false, 'baz'])
 
     await receiveGroupMemberRequest(instance.app, '321')
-    expect(instance.handleGuildMemberRequest.mock.calls).to.have.shape([['flag', false, 'bar']])
+    expect(instance.handleGuildMemberRequest.mock.calls).to.have.length(1)
+    expect(instance.handleGuildMemberRequest.mock.calls[0].arguments).to.have.shape(['flag', false, 'bar'])
   })
 
   it('request handler: boolean', async () => {
@@ -88,13 +91,16 @@ describe('koishi-plugin-verifier', () => {
     })
 
     await receiveFriendRequest(instance.app, '321')
-    expect(instance.handleFriendRequest.mock.calls).to.have.shape([['flag', false]])
+    expect(instance.handleFriendRequest.mock.calls).to.have.length(1)
+    expect(instance.handleFriendRequest.mock.calls[0].arguments).to.have.shape(['flag', false])
 
     await receiveGroupRequest(instance.app, '321')
-    expect(instance.handleGuildRequest.mock.calls).to.have.shape([['flag', false]])
+    expect(instance.handleGuildRequest.mock.calls).to.have.length(1)
+    expect(instance.handleGuildRequest.mock.calls[0].arguments).to.have.shape(['flag', false])
 
     await receiveGroupMemberRequest(instance.app, '321')
-    expect(instance.handleGuildMemberRequest.mock.calls).to.have.shape([['flag', false]])
+    expect(instance.handleGuildMemberRequest.mock.calls).to.have.length(1)
+    expect(instance.handleGuildMemberRequest.mock.calls[0].arguments).to.have.shape(['flag', false])
   })
 
   it('request handler: function', async () => {
@@ -105,12 +111,15 @@ describe('koishi-plugin-verifier', () => {
     })
 
     await receiveFriendRequest(instance.app, '321')
-    expect(instance.handleFriendRequest.mock.calls).to.have.shape([['flag', true]])
+    expect(instance.handleFriendRequest.mock.calls).to.have.length(1)
+    expect(instance.handleFriendRequest.mock.calls[0].arguments).to.have.shape(['flag', true])
 
     await receiveGroupRequest(instance.app, '321')
-    expect(instance.handleGuildRequest.mock.calls).to.have.shape([['flag', true]])
+    expect(instance.handleGuildRequest.mock.calls).to.have.length(1)
+    expect(instance.handleGuildRequest.mock.calls[0].arguments).to.have.shape(['flag', true])
 
     await receiveGroupMemberRequest(instance.app, '321')
-    expect(instance.handleGuildMemberRequest.mock.calls).to.have.shape([['flag', true]])
+    expect(instance.handleGuildMemberRequest.mock.calls).to.have.length(1)
+    expect(instance.handleGuildMemberRequest.mock.calls[0].arguments).to.have.shape(['flag', true])
   })
 })

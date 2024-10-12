@@ -3,7 +3,7 @@ import { install, InstalledClock } from '@sinonjs/fake-timers'
 import * as schedule from '../src'
 import memory from '@koishijs/plugin-database-memory'
 import mock from '@koishijs/plugin-mock'
-import * as jest from 'jest-mock'
+import { mock as jest } from 'node:test'
 import { expect, use } from 'chai'
 import shape from 'chai-shape'
 
@@ -99,7 +99,7 @@ describe('koishi-plugin-schedule', () => {
   it('database integration', async () => {
     await clock.tickAsync(Time.day) // 02:31
     expect(send.mock.calls).to.have.length(1)
-    expect(send.mock.calls[0]).to.shape([client2.event.channel?.id, 'bar'])
+    expect(send.mock.calls[0].arguments).to.shape([client2.event.channel?.id, 'bar'])
   })
 
   it('check arguments', async () => {

@@ -9,7 +9,6 @@ ctx.plugin(spawn)
 const client = ctx.mock.client('123')
 
 describe('koishi-plugin-spawn', () => {
-  before(() => ctx.start())
   after(() => ctx.stop())
 
   it('basic support', async () => {
