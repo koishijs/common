@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-shutdown",
   "description": "shutdown(8) for Koishi.",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -57,9 +57,14 @@
     ]
   },
   "devDependencies": {
-    "koishi": "^4.17.2"
+    "@types/chai": "^4.3.16",
+    "chai": "^5.1.1",
+    "koishi": "^4.18.3"
   },
   "peerDependencies": {
-    "koishi": "^4.17.2"
+    "koishi": "^4.18.3"
+  },
+  "dependencies": {
+    "@satorijs/element": "^3.1.7"
   }
 }

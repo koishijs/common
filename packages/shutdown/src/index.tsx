@@ -50,7 +50,7 @@ export function apply(ctx: Context) {
 
       let parsedTime = parseTime(time || '+1')
       if (time === '+0' || time === 'now') parsedTime = 0
-      else if (!parsedTime) return session.text('.invalid-time', [time])
+      else if (parsedTime === false) return session.text('.invalid-time', [time])
 
       const { isDirect, channelId, guildId, sid } = session
       const code = options.reboot ? 51 : options.rebootHard ? 52 : 0
@@ -76,20 +76,20 @@ export function apply(ctx: Context) {
 function parseTime(time: string) {
   if (!time) return false
   const hhmm = parseHhmm(time)
-  if (hhmm) return hhmm
+  if (hhmm !== false) return hhmm
   return parseMinutes(time)
 }
 
 function parseHhmm(time: string) {
   const splits = time.split(':')
   if (splits.length !== 2) return false
-  const nums = splits.map((x) => Number(x))
-  if (!nums[0] || !nums[1]) return false
-  if (nums[0] < 0 || nums[1] < 0) return false
-  if (nums[0] > 23 || nums[1] > 59) return false
+  const [h, m] = splits.map((x) => +x)
+  if (h * 0 !== 0 || m * 0 !== 0) return false
+  if (h < 0 || m < 0) return false
+  if (h > 23 || m > 59) return false
   const date = new Date()
-  date.setHours(nums[0])
-  date.setMinutes(nums[1])
+  date.setHours(h)
+  date.setMinutes(m)
   date.setSeconds(0)
   date.setMilliseconds(0)
   let dateNum = date.getTime()
