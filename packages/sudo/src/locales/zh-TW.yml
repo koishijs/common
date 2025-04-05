@@ -1,0 +1,11 @@
+commands:
+  sudo:
+    description: 在特定上下文中觸發指令
+    options:
+      user: 切换用户身份
+      channel: 切换触发频道
+      direct: 模拟私聊触发
+    messages:
+      expect-command: 請輸入要觸發的指令。
+      expect-context: 請提供新的上下文。
+      direct-channel: '--channel 和 --direct 无法同时使用。'

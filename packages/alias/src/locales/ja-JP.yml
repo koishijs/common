@@ -1,0 +1,11 @@
+commands:
+  alias:
+    description: 创建别名指令
+    messages:
+      created: 已成功创建别名指令 {0}。
+      updated: 已成功更新别名指令 {0}。
+  unalias:
+    description: 删除别名指令
+    messages:
+      deleted: 已成功删除别名指令 {0}。
+      not-found: 未找到别名指令 {0}。
